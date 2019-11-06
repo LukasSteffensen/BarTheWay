@@ -7,4 +7,5 @@
     <string name="mBtnClear">Clear Input</string>
     <string name="btnStudent">Student</string>
     <string name="btnBartender">Bartender</string>
+    <string name="title">Title</string>
 </resources>

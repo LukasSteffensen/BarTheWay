@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddItemActivity">
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="20dp">
+
+        <EditText
+            android:id="@+id/title"
+            android:hint="@string/title"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"/>
+
+        <EditText
+            android:id="@+id/language"
+            android:hint="Language"
+            android:textSize="25sp"
+            android:layout_below="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"/>
+
+        <EditText
+            android:id="@+id/description"
+            android:hint="Description"
+            android:textSize="25sp"
+            android:layout_below="@+id/language"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"/>
+
+        <EditText
+            android:id="@+id/minPlayers"
+            android:hint="Minimum players"
+            android:textSize="25sp"
+            android:layout_below="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"/>
+
+
+        <EditText
+            android:id="@+id/maxPlayers"
+            android:hint="Maximum players"
+            android:textSize="25sp"
+            android:layout_below="@+id/minPlayers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="Autofill"/>
+
+    </RelativeLayout>
+
+</android.support.v4.widget.NestedScrollView>
