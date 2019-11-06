@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">BarTheWay2</string>
+    <string name="button_search">Search</string>
+    <string name="button_connect">Connect</string>
+    <string name="txtReceiveHint">Waiting for student to scan card</string>
+    <string name="txtGameHint">Choose a game for borrowing</string>
+    <string name="mBtnClear">Clear Input</string>
+    <string name="btnStudent">Student</string>
+    <string name="btnBartender">Bartender</string>
+</resources>
