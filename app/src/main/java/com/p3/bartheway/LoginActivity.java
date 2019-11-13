@@ -1,4 +1,4 @@
-package com.p3.bartheway2;
+package com.p3.bartheway;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;

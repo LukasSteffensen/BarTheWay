@@ -1,4 +1,4 @@
-package com.p3.bartheway2;
+package com.p3.bartheway;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -1,4 +1,4 @@
-package com.p3.bartheway2;
+package com.p3.bartheway;
 
 import java.io.IOException;
 import java.io.InputStream;

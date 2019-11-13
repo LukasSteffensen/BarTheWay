@@ -1,4 +1,4 @@
-package com.p3.bartheway2;
+package com.p3.bartheway;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

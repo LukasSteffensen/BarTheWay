@@ -1,4 +1,4 @@
-package com.p3.bartheway2;
+package com.p3.bartheway;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
