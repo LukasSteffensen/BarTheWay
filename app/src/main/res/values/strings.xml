@@ -8,4 +8,11 @@
     <string name="btnStudent">Student</string>
     <string name="btnBartender">Bartender</string>
     <string name="title">Title</string>
+    <string name="menu_current">Current Borrowers</string>
+    <string name="menu_bluetooth_settings">Bluetooth settings</string>
+    <string name="menu_previous">Previous</string>
+    <string name="menu_account">Account settings</string>
+    <string name="menu_delete">Delete game</string>
+    <string name="menu_add">Add game</string>
+    <string name="menu_logout">Logout</string>
 </resources>
