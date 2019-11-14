@@ -1,6 +1,7 @@
 package com.p3.bartheway.Browse;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.p3.bartheway.ApiClient;
 import com.p3.bartheway.ApiInterface;
@@ -34,6 +35,7 @@ public class BrowsePresenter {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetResult(response.body());
+                    Log.i("onResponse", response.body().toString());
                 }
             }
 

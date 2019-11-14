@@ -124,7 +124,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     @Override
     public void onItemClick(int position) {
-        mTxtGame.setText(test.get(position).getTitle());
+        mTxtGame.setText(items.get(position).getTitle());
     }
 
     @Override
@@ -144,6 +144,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mRecyclerView.setAdapter(mAdapter);
 
         this.items = items;
+        Log.i("hallo", ""+items.get(1).getMaxPlayers());
     }
 
     @Override

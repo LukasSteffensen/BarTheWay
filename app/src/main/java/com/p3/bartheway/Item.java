@@ -16,13 +16,32 @@ public class Item {
     @Expose
     @SerializedName("maxPlayers") private int maxPlayers;
     @Expose
-    @SerializedName("cardUid") private int cardUid;
+    @SerializedName("card_uid") private int card_uid;
+    @Expose
+    @SerializedName("duration") private String duration;
+    @Expose
+    @SerializedName("year") private int year;
     @Expose
     @SerializedName("success") private Boolean success;
     @Expose
     @SerializedName("message") private String message;
 
 
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
 
     public String getTitle() {
         return title;
@@ -65,11 +84,11 @@ public class Item {
     }
 
     public int getCardUid() {
-        return cardUid;
+        return card_uid;
     }
 
     public void setCardUid(int cardUid) {
-        this.cardUid = cardUid;
+        this.card_uid = cardUid;
     }
 
     public Boolean getSuccess() {

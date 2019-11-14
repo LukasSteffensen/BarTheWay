@@ -38,7 +38,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());
-        recyclerViewAdapter.mTextViewPlayers.setText(""+item.getMaxPlayers());
+        recyclerViewAdapter.mTextViewPlayers.setText(item.getMinPlayers()+"-"+item.getMaxPlayers());
         recyclerViewAdapter.mImageView.setImageResource(R.drawable.arduino_with_sensor);
 
     }
