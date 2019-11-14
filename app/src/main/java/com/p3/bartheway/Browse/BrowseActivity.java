@@ -96,7 +96,9 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
         presenter = new BrowsePresenter(this);
         presenter.getData();
 
-
+        swipeRefresh.setOnRefreshListener(
+                () -> presenter.getData()
+        );
 
 
         final Intent intent = getIntent();
@@ -140,12 +142,12 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
 
     @Override
     public void showLoading() {
-
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
     public void hideLoading() {
-
+        swipeRefresh.setRefreshing(true);
     }
 
     @Override
