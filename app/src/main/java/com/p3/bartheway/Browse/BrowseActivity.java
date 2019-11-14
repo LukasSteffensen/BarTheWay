@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import android.app.Activity;
+import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -39,8 +41,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private ReadInput mReadThread = null;
 
     SwipeRefreshLayout swipeRefresh;
+
+
     BrowsePresenter presenter;
-    List<Item> items;
+
+    List<Item> item;
 
 
     private boolean mIsUserInitiatedDisconnect = false;
@@ -85,7 +90,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mAdapter = new ItemRecyclerAdapter(test, this);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setAdapter(mAdapter);
 
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
@@ -143,18 +147,20 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     @Override
     public void hideLoading() {
-        swipeRefresh.setRefreshing(true);
+        swipeRefresh.setRefreshing(false);
     }
 
     @Override
     public void onGetResult(List<Item> items) {
         mAdapter.notifyDataSetChanged();
+        mRecyclerView.setAdapter(mAdapter);
 
+        item = items;
     }
 
     @Override
     public void onErrorLoading(String message) {
-
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     private class ReadInput implements Runnable {
