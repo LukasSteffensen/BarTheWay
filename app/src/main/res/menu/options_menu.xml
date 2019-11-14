@@ -10,25 +10,6 @@
         android:id="@+id/current_borrowers"
         android:title="@string/menu_current"
         app:showAsAction="never"/>
-    <item
-        android:id="previous_borrowers"
-        android:title="@string/menu_previous"
-        app:showAsAction="never"/>
-    <item
-        android:id="account_settings"
-        android:title="@string/menu_account"
-        app:showAsAction="never"/>
-    <item
-        android:id="delete_game"
-        android:title="@string/menu_delete"
-        app:showAsAction="never"/>
-    <item
-        android:id="add_game"
-        android:title="@string/menu_add"
-        app:showAsAction="never"/>
-    <item
-        android:id="logout"
-        android:title="@string/menu_logout"
-        app:showAsAction="never"/>
+
 
 </menu>

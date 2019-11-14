@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import android.app.Activity;
-import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -16,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,7 +30,7 @@ import android.widget.Toast;
 import com.p3.bartheway.Item;
 import com.p3.bartheway.R;
 
-public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
+public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
     private static final String TAG = "BluetoothActivity";
     private int mMaxChars = 50000;//Default
@@ -40,10 +39,7 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
     private ReadInput mReadThread = null;
 
     SwipeRefreshLayout swipeRefresh;
-
-
     BrowsePresenter presenter;
-
     List<Item> items;
 
 
