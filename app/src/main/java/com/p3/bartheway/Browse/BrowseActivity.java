@@ -58,11 +58,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private RecyclerView mRecyclerView;
     private ItemRecyclerAdapter mAdapter;
     private Button mBtnClearInput;
-    private Button mBtnTest;
-    private CheckBox chkReceiveText;
     private Bundle b;
-    ArrayList<Item> test = new ArrayList<>();
-
 
     private boolean mIsBluetoothConnected = false;
 
@@ -104,9 +100,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         }
         Log.d(TAG, "Ready");
 
-        chkReceiveText = (CheckBox) findViewById(R.id.chkReceiveText);
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
-        mBtnTest = findViewById(R.id.button_test);
 
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
@@ -115,14 +109,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 mTxtReceive.setText("");
             }
         });
-
-        mBtnTest.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
-            }
-        });
-
     }
 
     @Override
@@ -206,15 +192,12 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         /*
                          * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
                          */
-
-                        if (chkReceiveText.isChecked()) {
-                            mTxtReceive.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mTxtReceive.setText(strInput);
-                                }
-                            });
-                        }
+                        mTxtReceive.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mTxtReceive.setText(strInput);
+                            }
+                        });
 
                     }
                     Thread.sleep(500);

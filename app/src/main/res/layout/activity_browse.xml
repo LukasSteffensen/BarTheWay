@@ -12,10 +12,10 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnClearInput"
+        app:layout_constraintBottom_toTopOf="@+id/txtReceive"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_test">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
@@ -23,8 +23,7 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toTopOf="@+id/txtGame"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_test">
+            app:layout_constraintStart_toStartOf="parent">
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/item_recyclerView"
@@ -34,29 +33,6 @@
 
 
     </LinearLayout>
-
-
-
-    <CheckBox
-        android:id="@+id/chkReceiveText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:checked="true"
-        android:text="Read"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to test"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chkReceiveText" />
 
 
     <TextView
@@ -72,9 +48,7 @@
         app:layout_constraintBottom_toTopOf="@+id/btnClearInput"
         app:layout_constraintEnd_toStartOf="@+id/txtGame"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.978" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/txtGame"
