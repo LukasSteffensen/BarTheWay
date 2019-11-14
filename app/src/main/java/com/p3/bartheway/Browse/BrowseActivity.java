@@ -13,9 +13,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,7 +32,7 @@ import android.widget.Toast;
 import com.p3.bartheway.Item;
 import com.p3.bartheway.R;
 
-public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnClickListener{
+public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener{
 
     private static final String TAG = "BluetoothActivity";
     private int mMaxChars = 50000;//Default
@@ -103,7 +107,9 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
 
             @Override
             public void onClick(View arg0) {
-                mTxtReceive.setText("");
+                if(b.get("Connect").equals("true")) {
+                    mTxtReceive.setText("");
+                }
             }
         });
 
@@ -115,6 +121,24 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
         });
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.options_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.bluetooth:
+                Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

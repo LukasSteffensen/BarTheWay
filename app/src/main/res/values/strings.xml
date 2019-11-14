@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BarTheWay2</string>
+    <string name="app_name">BarTheWay</string>
     <string name="button_search">Search</string>
     <string name="button_connect">Connect</string>
     <string name="txtReceiveHint">Waiting for student to scan card</string>
