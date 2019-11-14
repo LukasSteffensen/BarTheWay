@@ -20,6 +20,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -123,6 +126,22 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.bluetooth:
+                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void onItemClick(int position) {
         mTxtGame.setText(items.get(position).getTitle());
     }
@@ -142,7 +161,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mAdapter = new ItemRecyclerAdapter(items, this);
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
-
         this.items = items;
         Log.i("hallo", ""+items.get(1).getMaxPlayers());
     }

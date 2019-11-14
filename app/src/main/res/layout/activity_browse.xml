@@ -12,7 +12,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/txtReceive"
+        app:layout_constraintBottom_toTopOf="@+id/btnClearInput"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_test">
@@ -72,7 +72,9 @@
         app:layout_constraintBottom_toTopOf="@+id/btnClearInput"
         app:layout_constraintEnd_toStartOf="@+id/txtGame"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintVertical_bias="0.978" />
 
     <TextView
         android:id="@+id/txtGame"
@@ -83,8 +85,8 @@
         android:hint="@string/txtGameHint"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnClearInput"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtReceive" />
 
     <Button
         android:id="@+id/btnClearInput"
