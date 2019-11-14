@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class AddItemActivity extends AppCompatActivity {
 
-    EditText editTextTitle, editTextMaxPlayers, editTextLanguage, editTextMinPlayers, editTextDescription;
+    EditText editTextTitle, editTextMaxPlayers, editTextLanguage, editTextMinPlayers, editTextDescription, editTextDuration, editTextYear;
 
     ApiInterface apiInterface;
 
@@ -30,7 +30,8 @@ public class AddItemActivity extends AppCompatActivity {
         editTextDescription = findViewById(R.id.description);
         editTextMinPlayers = findViewById(R.id.minPlayers);
         editTextMaxPlayers = findViewById(R.id.maxPlayers);
-
+        editTextDuration = findViewById(R.id.duration);
+        editTextYear = findViewById(R.id.year);
 
     }
 
@@ -50,12 +51,15 @@ public class AddItemActivity extends AppCompatActivity {
 
                 String minPlayersString = editTextMinPlayers.getText().toString().trim();
                 String maxPlayersString = editTextMaxPlayers.getText().toString().trim();
+                String yearString = editTextYear.getText().toString().trim();
 
                 String title = editTextTitle.getText().toString().trim();
                 String language = editTextLanguage.getText().toString().trim();
                 String description = editTextDescription.getText().toString().trim();
                 int minPlayers = Integer.parseInt(minPlayersString);
                 int maxPlayers = Integer.parseInt(maxPlayersString);
+                String duration = editTextDuration.getText().toString().trim();
+                int year = Integer.parseInt(yearString);
 
                 if (title.isEmpty()) {
                     editTextTitle.setError("Please enter a title");
@@ -77,7 +81,7 @@ public class AddItemActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    saveItem(title, language, description, minPlayers, maxPlayers);
+                    saveItem(title, language, description, minPlayers, maxPlayers, duration, year);
                 }
                 return true;
             default:
@@ -89,11 +93,13 @@ public class AddItemActivity extends AppCompatActivity {
                           final String language,
                           final String description,
                           final int minPlayers,
-                          final int maxPlayers) {
+                          final int maxPlayers,
+                          final String duration,
+                          final int year) {
 
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Item> call =  apiInterface.saveItem(title, language, description, minPlayers, maxPlayers);
+        Call<Item> call =  apiInterface.saveItem(title, language, description, minPlayers, maxPlayers, duration, year);
 
         call.enqueue(new Callback<Item>() {
             @Override

@@ -3,8 +3,10 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import android.app.Activity;
+import android.app.Presentation;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,6 +15,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,13 +31,20 @@ import android.widget.Toast;
 import com.p3.bartheway.Item;
 import com.p3.bartheway.R;
 
-public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnClickListener{
+public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
     private static final String TAG = "BluetoothActivity";
     private int mMaxChars = 50000;//Default
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
     private ReadInput mReadThread = null;
+
+    SwipeRefreshLayout swipeRefresh;
+
+
+    BrowsePresenter presenter;
+
+    List<Item> items;
 
 
     private boolean mIsUserInitiatedDisconnect = false;
@@ -81,6 +91,12 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setAdapter(mAdapter);
 
+        swipeRefresh = findViewById(R.id.swipeRefresh);
+
+        presenter = new BrowsePresenter(this);
+        presenter.getData();
+
+
 
 
         final Intent intent = getIntent();
@@ -120,6 +136,27 @@ public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnCl
     @Override
     public void onItemClick(int position) {
         mTxtGame.setText(test.get(position).getTitle());
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void onGetResult(List<Item> items) {
+        mAdapter.notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onErrorLoading(String message) {
+
     }
 
     private class ReadInput implements Runnable {
