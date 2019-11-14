@@ -45,8 +45,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     BrowsePresenter presenter;
 
-    List<Item> item;
-
+    List<Item> items;
 
     private boolean mIsUserInitiatedDisconnect = false;
 
@@ -77,17 +76,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mTxtReceive = (TextView) findViewById(R.id.txtReceive);
         mTxtGame = findViewById(R.id.txtGame);
         mRecyclerView = findViewById(R.id.item_recyclerView);
-        Item item1 = new Item();
-        Item item2 = new Item();
-        item1.setTitle("Hello");
-        item1.setLanguage("bogish");
-        item1.setMaxPlayers(8);
-        item2.setTitle("noeo");
-        item2.setLanguage("sdsee");
-        item2.setMaxPlayers(19);
-        test.add(item1);
-        test.add(item2);
-        mAdapter = new ItemRecyclerAdapter(test, this);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
 
@@ -132,7 +120,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             }
         });
 
-
     }
 
     @Override
@@ -152,10 +139,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     @Override
     public void onGetResult(List<Item> items) {
+        mAdapter = new ItemRecyclerAdapter(items, this);
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
 
-        item = items;
+        this.items = items;
     }
 
     @Override

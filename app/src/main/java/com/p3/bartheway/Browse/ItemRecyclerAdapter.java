@@ -12,15 +12,16 @@ import com.p3.bartheway.Item;
 import com.p3.bartheway.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.RecyclerViewAdapter> {
 
     private OnClickListener mOnClickListener;
 
-    ArrayList<Item> mItemArrayList;
+    List<Item> mItemList;
 
-    public ItemRecyclerAdapter(ArrayList<Item> itemArrayList, OnClickListener onClickListener){
-        this.mItemArrayList = itemArrayList;
+    public ItemRecyclerAdapter(List<Item> itemList, OnClickListener onClickListener){
+        this.mItemList = itemList;
         this.mOnClickListener = onClickListener;
     }
 
@@ -33,7 +34,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter recyclerViewAdapter, int i) {
-        Item item = mItemArrayList.get(i);
+        Item item = mItemList.get(i);
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());
@@ -43,12 +44,12 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     }
 
     public Item getItem(int position){
-        return mItemArrayList.get(position);
+        return mItemList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return mItemArrayList.size();
+        return mItemList.size();
     }
 
     class RecyclerViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener{
