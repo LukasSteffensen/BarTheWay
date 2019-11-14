@@ -1,8 +1,10 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Browse;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+
+import com.p3.bartheway.R;
 
 public class TestActivity extends AppCompatActivity {
 

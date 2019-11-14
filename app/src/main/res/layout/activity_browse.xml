@@ -5,7 +5,7 @@
     android:id="@+id/constrainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MonitoringScreen">
+    tools:context=".Browse.BrowseActivity">
 
 
     <CheckBox
@@ -35,7 +35,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="492dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@android:drawable/alert_light_frame"
         android:hint="@string/txtReceiveHint"
@@ -44,20 +44,20 @@
         app:layout_constraintEnd_toStartOf="@+id/txtGame"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_test" />
+        app:layout_constraintTop_toBottomOf="@+id/item_recyclerView" />
 
     <TextView
         android:id="@+id/txtGame"
         android:layout_width="182dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="492dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@android:drawable/alert_light_frame"
         android:hint="@string/txtGameHint"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_test" />
+        app:layout_constraintTop_toBottomOf="@+id/item_recyclerView" />
 
     <Button
         android:id="@+id/btnClearInput"
@@ -68,6 +68,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_recyclerView"
+        android:layout_width="409dp"
+        android:layout_height="490dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_test" />
 
 
 </android.support.constraint.ConstraintLayout>

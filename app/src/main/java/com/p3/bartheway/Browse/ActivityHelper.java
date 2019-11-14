@@ -1,4 +1,4 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Browse;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;

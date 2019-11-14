@@ -1,4 +1,4 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Browse;
 
 
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +25,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.p3.bartheway.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +100,7 @@ public class BluetoothActivity extends AppCompatActivity {
             @Override
             public void onClick(View arg0) {
                 BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), MonitoringScreen.class);
+                Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);

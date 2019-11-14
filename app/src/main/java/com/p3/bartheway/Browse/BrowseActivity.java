@@ -1,7 +1,8 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Browse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.UUID;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -11,7 +12,11 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,7 +25,10 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MonitoringScreen extends Activity {
+import com.p3.bartheway.Item;
+import com.p3.bartheway.R;
+
+public class BrowseActivity extends Activity implements ItemRecyclerAdapter.OnClickListener{
 
     private static final String TAG = "BluetoothActivity";
     private int mMaxChars = 50000;//Default
@@ -33,12 +41,14 @@ public class MonitoringScreen extends Activity {
 
     // All controls here
     private TextView mTxtReceive;
+    private TextView mTxtGame;
+    private RecyclerView mRecyclerView;
+    private ItemRecyclerAdapter mAdapter;
     private Button mBtnClearInput;
     private Button mBtnTest;
-    private ScrollView scrollView;
-    private CheckBox chkScroll;
     private CheckBox chkReceiveText;
     private Bundle b;
+    ArrayList<Item> test = new ArrayList<>();
 
 
     private boolean mIsBluetoothConnected = false;
@@ -50,12 +60,32 @@ public class MonitoringScreen extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_monitoring_screen);
+        setContentView(R.layout.activity_browse);
         ActivityHelper.initialize(this);
+
+        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
+        mTxtGame = findViewById(R.id.txtGame);
+        mRecyclerView = findViewById(R.id.item_recyclerView);
+        Item item1 = new Item();
+        Item item2 = new Item();
+        item1.setTitle("Hello");
+        item1.setLanguage("bogish");
+        item1.setMaxPlayers(8);
+        item2.setTitle("noeo");
+        item2.setLanguage("sdsee");
+        item2.setMaxPlayers(19);
+        test.add(item1);
+        test.add(item2);
+        mAdapter = new ItemRecyclerAdapter(test, this);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setAdapter(mAdapter);
+
+
 
         final Intent intent = getIntent();
         b = intent.getExtras();
-        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
+
         if(b.get("Connect").equals("true")) {
             mDevice = b.getParcelable(BluetoothActivity.DEVICE_EXTRA);
             mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
@@ -85,6 +115,11 @@ public class MonitoringScreen extends Activity {
         });
 
 
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        mTxtGame.setText(test.get(position).getTitle());
     }
 
     private class ReadInput implements Runnable {
@@ -230,7 +265,7 @@ public class MonitoringScreen extends Activity {
 
         @Override
         protected void onPreExecute() {
-                progressDialog = ProgressDialog.show(MonitoringScreen.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
+                progressDialog = ProgressDialog.show(BrowseActivity.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
         }
 
         @Override

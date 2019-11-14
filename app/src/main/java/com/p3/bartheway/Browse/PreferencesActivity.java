@@ -1,4 +1,4 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Browse;
 
 import java.util.Map;
 
@@ -10,6 +10,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
+
+import com.p3.bartheway.Browse.ActivityHelper;
 
 public class PreferencesActivity extends PreferenceActivity implements OnSharedPreferenceChangeListener {
     @Override

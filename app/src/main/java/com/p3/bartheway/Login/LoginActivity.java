@@ -1,10 +1,13 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Login;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.p3.bartheway.Browse.BrowseActivity;
+import com.p3.bartheway.R;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
         btnBartender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), MonitoringScreen.class);
+                Intent i = new Intent(getApplicationContext(), BrowseActivity.class);
                 i.putExtra("Connect", "false");
                 startActivity(i);
             }
