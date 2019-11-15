@@ -19,6 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.p3.bartheway.AddItemActivity"/>
         <activity android:name="com.p3.bartheway.Browse.TestActivity" />
         <activity android:name="com.p3.bartheway.Browse.BrowseActivity" />
         <activity android:name="com.p3.bartheway.Browse.BluetoothActivity">
