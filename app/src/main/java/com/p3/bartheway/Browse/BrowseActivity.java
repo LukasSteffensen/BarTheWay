@@ -40,7 +40,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     SwipeRefreshLayout swipeRefresh;
 
-
     BrowsePresenter presenter;
 
     List<Item> items;
@@ -103,7 +102,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
             @Override
             public void onClick(View arg0) {
-                if(b.get("Connected").equals("true")) {
+                if(b.get("Connect").equals("true")) {
                     mTxtReceive.setText("");
                 }
             }
