@@ -23,21 +23,15 @@ public class LoginActivity extends AppCompatActivity {
         btnBartender = findViewById(R.id.btnBartender);
         btnStudent = findViewById(R.id.btnStudent);
 
-        btnBartender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), BrowseActivity.class);
-                i.putExtra("Connect", "false");
-                startActivity(i);
-            }
+        btnBartender.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), BrowseActivity.class);
+            i.putExtra("Connect", "false");
+            startActivity(i);
         });
 
-        btnStudent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getApplicationContext(), AddItemActivity.class);
-                startActivity(i);
-            }
+        btnStudent.setOnClickListener(v -> {
+            Intent i = new Intent(getApplicationContext(), AddItemActivity.class);
+            startActivity(i);
         });
     }
 }
