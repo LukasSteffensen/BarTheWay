@@ -25,7 +25,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.p3.bartheway.Item;
+import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.R;
 
 public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{

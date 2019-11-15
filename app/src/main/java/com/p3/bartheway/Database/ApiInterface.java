@@ -1,4 +1,4 @@
-package com.p3.bartheway;
+package com.p3.bartheway.Database;
 
 import java.util.List;
 
@@ -24,5 +24,8 @@ public interface ApiInterface {
 
     @GET("items.php")
     Call<List<Item>> getItems();
+
+    @GET("student.php")
+    Call<Student> getStudent();
 
 }

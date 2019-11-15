@@ -3,9 +3,9 @@ package com.p3.bartheway.Browse;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.p3.bartheway.ApiClient;
-import com.p3.bartheway.ApiInterface;
-import com.p3.bartheway.Item;
+import com.p3.bartheway.Database.ApiClient;
+import com.p3.bartheway.Database.ApiInterface;
+import com.p3.bartheway.Database.Item;
 
 import java.util.List;
 

@@ -10,6 +10,10 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.p3.bartheway.Database.ApiClient;
+import com.p3.bartheway.Database.ApiInterface;
+import com.p3.bartheway.Database.Item;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

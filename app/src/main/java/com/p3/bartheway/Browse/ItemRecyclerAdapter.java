@@ -8,10 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.p3.bartheway.Item;
+import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.RecyclerViewAdapter> {

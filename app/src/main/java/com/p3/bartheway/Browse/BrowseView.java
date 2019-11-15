@@ -1,6 +1,6 @@
 package com.p3.bartheway.Browse;
 
-import com.p3.bartheway.Item;
+import com.p3.bartheway.Database.Item;
 
 import java.util.List;
 
