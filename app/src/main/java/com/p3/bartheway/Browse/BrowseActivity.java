@@ -2,6 +2,7 @@ package com.p3.bartheway.Browse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.List;
 import java.util.UUID;
 import android.app.ProgressDialog;
@@ -106,6 +107,18 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         });
     }
 
+    public static String reverseTheSentence (String inputString){
+        String[] words = inputString.split("\\s");
+
+        String outputString = "";
+
+        for (int i = words.length - 1; i >= 0; i--) {
+            outputString = outputString + words[i];
+        }
+
+        return outputString;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -183,14 +196,14 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
                         }
                         final String strInput = new String(buffer, 0, i);
+                        String hex = strInput.toUpperCase();
+                        hex = reverseTheSentence(hex);
+                        Integer cardUID = Integer.parseInt(hex, 16);
 
-                        /*
-                         * If checked then receive text, better design would probably be to stop thread if unchecked and free resources, but this is a quick fix
-                         */
                         mTxtReceive.post(new Runnable() {
                             @Override
                             public void run() {
-                                mTxtReceive.setText(strInput);
+                                mTxtReceive.setText(""+cardUID);
                             }
                         });
 
