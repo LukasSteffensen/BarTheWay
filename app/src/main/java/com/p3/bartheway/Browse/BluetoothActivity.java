@@ -99,13 +99,16 @@ public class BluetoothActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View arg0) {
-                BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-                Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
-                intent.putExtra(DEVICE_EXTRA, device);
-                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-                intent.putExtra(BUFFER_SIZE, mBufferSize);
-                intent.putExtra("Connect","true");
-                startActivity(intent);
+                if (((MyAdapter) (listView.getAdapter())).isSelected()) {
+                    BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
+
+                    Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
+                    intent.putExtra(DEVICE_EXTRA, device);
+                    intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
+                    intent.putExtra(BUFFER_SIZE, mBufferSize);
+                    intent.putExtra("Connect", "true");
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -240,6 +243,14 @@ public class BluetoothActivity extends AppCompatActivity {
 
         public BluetoothDevice getSelectedItem() {
             return myList.get(selectedIndex);
+        }
+
+        public boolean isSelected(){
+            if(selectedIndex > -1){
+                return true;
+            } else {
+                return false;
+            }
         }
 
         @Override
