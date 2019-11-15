@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p3.bartheway.Database.Item;
+import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
 public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
@@ -43,6 +44,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     BrowsePresenter presenter;
 
     List<Item> items;
+
+    Student student;
 
     private boolean mIsUserInitiatedDisconnect = false;
 
@@ -164,6 +167,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onGetStudent(Student student) {
+        this.student = student;
+    }
+
     private class ReadInput implements Runnable {
 
         private boolean bStop = false;
@@ -203,7 +211,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         mTxtReceive.post(new Runnable() {
                             @Override
                             public void run() {
-                                mTxtReceive.setText(""+cardUID);
+                                presenter.getStudentData();
+                                mTxtReceive.setText(student.getStudentName());
                             }
                         });
 

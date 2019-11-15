@@ -6,6 +6,7 @@ import android.util.Log;
 import com.p3.bartheway.Database.ApiClient;
 import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
+import com.p3.bartheway.Database.Student;
 
 import java.util.List;
 
@@ -44,6 +45,32 @@ public class BrowsePresenter {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
 
+            }
+        });
+    }
+    void getStudentData(){
+
+        view.showLoading();
+
+        ApiInterface apiInterface = ApiClient
+                .getApiClient()
+                .create(ApiInterface.class);
+
+        Call<Student> call = apiInterface.getStudent();
+        call.enqueue(new Callback<Student>() {
+            @Override
+            public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
+                view.hideLoading();
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onGetStudent(response.body());
+                    Log.i("onResponse", response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
+                view.hideLoading();
+                view.onErrorLoading(t.getLocalizedMessage());
             }
         });
     }
