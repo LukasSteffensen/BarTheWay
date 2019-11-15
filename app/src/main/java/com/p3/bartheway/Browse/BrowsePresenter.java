@@ -48,7 +48,7 @@ public class BrowsePresenter {
             }
         });
     }
-    void getStudentData(){
+    void getStudentData(int card_uid){
 
         view.showLoading();
 
@@ -56,10 +56,10 @@ public class BrowsePresenter {
                 .getApiClient()
                 .create(ApiInterface.class);
 
-        Call<Student> call = apiInterface.getStudent();
-        call.enqueue(new Callback<Student>() {
+        Call<List<Student>> call = apiInterface.getStudent(card_uid);
+        call.enqueue(new Callback<List<Student>>() {
             @Override
-            public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
+            public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
@@ -68,7 +68,7 @@ public class BrowsePresenter {
             }
 
             @Override
-            public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
             }

@@ -44,7 +44,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     List<Item> items;
 
-    Student student;
+    List<Student> student;
 
     private boolean mIsUserInitiatedDisconnect = false;
 
@@ -167,7 +167,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     }
 
     @Override
-    public void onGetStudent(Student student) {
+    public void onGetStudent(List<Student> student) {
         this.student = student;
     }
 
@@ -210,8 +210,12 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         mTxtReceive.post(new Runnable() {
                             @Override
                             public void run() {
-                                presenter.getStudentData();
-                                mTxtReceive.setText(student.getStudentName());
+                                presenter.getStudentData(cardUID);
+                                if (student != null) {
+                                    mTxtReceive.setText(student.get(0).getStudentName());
+                                } else{
+                                    Log.i("student", "is null");
+                                }
                             }
                         });
 

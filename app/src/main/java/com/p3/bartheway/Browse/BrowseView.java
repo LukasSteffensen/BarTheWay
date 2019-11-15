@@ -10,5 +10,5 @@ public interface BrowseView {
     void hideLoading();
     void onGetResult(List<Item> items);
     void onErrorLoading(String message);
-    void onGetStudent(Student student);
+    void onGetStudent(List<Student> student);
 }
