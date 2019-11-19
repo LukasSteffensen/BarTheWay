@@ -24,6 +24,7 @@ public class BluetoothDeviceAdapter extends ArrayAdapter<BluetoothDevice> {
         context = ctx;
         myList = objects;
         selectedIndex = -1;
+
     }
 
     public void setSelectedIndex(int position) {
