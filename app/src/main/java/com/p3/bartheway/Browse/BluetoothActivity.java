@@ -6,24 +6,18 @@ import android.os.Bundle;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p3.bartheway.R;
@@ -54,18 +48,20 @@ public class BluetoothActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_bluetooth);
 
         search = (Button) findViewById(R.id.button_search);
         connect = (Button) findViewById(R.id.button_connect);
 
         listView = (ListView) findViewById(R.id.listView);
 
+
+       // Sets up the listView with the adapter and tries to get any old list (if the screen was rotated for example)
         if (savedInstanceState != null) {
             ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
             if (list != null) {
                 initList(list);
-                MyAdapter adapter = (MyAdapter) listView.getAdapter();
+                BluetoothDeviceAdapter adapter = (BluetoothDeviceAdapter) listView.getAdapter();
                 int selectedIndex = savedInstanceState.getInt(DEVICE_LIST_SELECTED);
                 if (selectedIndex != -1) {
                     adapter.setSelectedIndex(selectedIndex);
@@ -78,37 +74,35 @@ public class BluetoothActivity extends AppCompatActivity {
         } else {
             initList(new ArrayList<BluetoothDevice>());
         }
-        search.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View arg0) {
-                mBTAdapter = BluetoothAdapter.getDefaultAdapter();
 
-                if (mBTAdapter == null) {
-                    Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
-                } else if (!mBTAdapter.isEnabled()) {
-                    Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                    startActivityForResult(enableBT, BT_ENABLE_REQUEST);
-                } else {
-                    new SearchDevices().execute();
-                }
+        /*
+        Whenever the search button is clicked this will happen. First it checks if the phone has BT, then it checks if BT is enabled and asks
+        for it to be enabled. Then finally it creates an instance of the thread SearchDevices (which is at the end of this class) and executes it.
+         */
+        search.setOnClickListener(arg0 -> {
+            mBTAdapter = BluetoothAdapter.getDefaultAdapter();
+            if (mBTAdapter == null) {
+                Toast.makeText(getApplicationContext(), "Bluetooth not found", Toast.LENGTH_SHORT).show();
+            } else if (!mBTAdapter.isEnabled()) {
+                Intent enableBT = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                startActivityForResult(enableBT, BT_ENABLE_REQUEST);
+            } else {
+                new SearchDevices().execute();
             }
         });
 
-        connect.setOnClickListener(new View.OnClickListener() {
+        //If a device has been selected, the BrowseActivity will open with a bunch of extras from this activity
+        connect.setOnClickListener(arg0 -> {
+            if (((BluetoothDeviceAdapter) (listView.getAdapter())).isSelected()) {
+                BluetoothDevice device = ((BluetoothDeviceAdapter) (listView.getAdapter())).getSelectedItem();
 
-            @Override
-            public void onClick(View arg0) {
-                if (((MyAdapter) (listView.getAdapter())).isSelected()) {
-                    BluetoothDevice device = ((MyAdapter) (listView.getAdapter())).getSelectedItem();
-
-                    Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
-                    intent.putExtra(DEVICE_EXTRA, device);
-                    intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
-                    intent.putExtra(BUFFER_SIZE, mBufferSize);
-                    intent.putExtra("Connect", "true");
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
+                intent.putExtra(DEVICE_EXTRA, device);
+                intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
+                intent.putExtra(BUFFER_SIZE, mBufferSize);
+                intent.putExtra("Connect", "true");
+                startActivity(intent);
             }
         });
     }
@@ -124,8 +118,16 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onStop();
     }
 
+
+    /**Whenever the search  button is clicked and the user has to enable or disable Bluetooth, the OnActivityResult is called.
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        //Gets the answer form the user (yes or no) and acts accordingly
         switch (requestCode) {
             case BT_ENABLE_REQUEST:
                 if (resultCode == RESULT_OK) {
@@ -136,6 +138,8 @@ public class BluetoothActivity extends AppCompatActivity {
                 }
 
                 break;
+
+            // Maybe all of the preferences stuff is just unnecessary
             case SETTINGS: //If the settings have been updated
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 String uuid = prefs.getString("prefUuid", "Null");
@@ -173,7 +177,7 @@ public class BluetoothActivity extends AppCompatActivity {
      * @param objects
      */
     private void initList(List<BluetoothDevice> objects) {
-        final MyAdapter adapter = new MyAdapter(getApplicationContext(), R.layout.list_item, R.id.lstContent, objects);
+        final BluetoothDeviceAdapter adapter = new BluetoothDeviceAdapter(getApplicationContext(), R.layout.list_item, R.id.lstContent, objects);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -195,19 +199,14 @@ public class BluetoothActivity extends AppCompatActivity {
         @Override
         protected List<BluetoothDevice> doInBackground(Void... params) {
             Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
-            List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
-            for (BluetoothDevice device : pairedDevices) {
-                listDevices.add(device);
-            }
-            return listDevices;
-
+            return new ArrayList<>(pairedDevices);
         }
 
         @Override
         protected void onPostExecute(List<BluetoothDevice> listDevices) {
             super.onPostExecute(listDevices);
             if (listDevices.size() > 0) {
-                MyAdapter adapter = (MyAdapter) listView.getAdapter();
+                BluetoothDeviceAdapter adapter = (BluetoothDeviceAdapter) listView.getAdapter();
                 adapter.replaceItems(listDevices);
             } else {
                 msg("No paired devices found, please pair your serial BT device and try again");
@@ -223,91 +222,7 @@ public class BluetoothActivity extends AppCompatActivity {
      * @author ryder
      *
      */
-    private class MyAdapter extends ArrayAdapter<BluetoothDevice> {
-        private int selectedIndex;
-        private Context context;
-        private int selectedColor = Color.parseColor("#abcdef");
-        private List<BluetoothDevice> myList;
 
-        public MyAdapter(Context ctx, int resource, int textViewResourceId, List<BluetoothDevice> objects) {
-            super(ctx, resource, textViewResourceId, objects);
-            context = ctx;
-            myList = objects;
-            selectedIndex = -1;
-        }
-
-        public void setSelectedIndex(int position) {
-            selectedIndex = position;
-            notifyDataSetChanged();
-        }
-
-        public BluetoothDevice getSelectedItem() {
-            return myList.get(selectedIndex);
-        }
-
-        public boolean isSelected(){
-            if(selectedIndex > -1){
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        @Override
-        public int getCount() {
-            return myList.size();
-        }
-
-        @Override
-        public BluetoothDevice getItem(int position) {
-            return myList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        private class ViewHolder {
-            TextView tv;
-        }
-
-        public void replaceItems(List<BluetoothDevice> list) {
-            myList = list;
-            notifyDataSetChanged();
-        }
-
-        public List<BluetoothDevice> getEntireList() {
-            return myList;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View vi = convertView;
-            ViewHolder holder;
-            if (convertView == null) {
-                vi = LayoutInflater.from(context).inflate(R.layout.list_item, null);
-                holder = new ViewHolder();
-
-                holder.tv = (TextView) vi.findViewById(R.id.lstContent);
-
-                vi.setTag(holder);
-            } else {
-                holder = (ViewHolder) vi.getTag();
-            }
-
-            if (selectedIndex != -1 && position == selectedIndex) {
-                holder.tv.setBackgroundColor(selectedColor);
-            } else {
-                holder.tv.setBackgroundColor(Color.WHITE);
-            }
-            BluetoothDevice device = myList.get(position);
-            holder.tv.setText(device.getName() + "\n " + device.getAddress());
-
-            return vi;
-        }
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
