@@ -200,6 +200,7 @@ public class BluetoothActivity extends AppCompatActivity {
         protected List<BluetoothDevice> doInBackground(Void... params) {
             Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
             return new ArrayList<>(pairedDevices);
+
         }
 
         @Override
