@@ -29,6 +29,4 @@ public interface ApiInterface {
     @GET("student.php")
     Call<List<Student>> getStudent(@Query("card_uid") int card_uid);
 
-
-
 }
