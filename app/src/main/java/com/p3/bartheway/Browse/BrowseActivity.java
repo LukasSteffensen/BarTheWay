@@ -2,8 +2,6 @@ package com.p3.bartheway.Browse;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +13,6 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -30,8 +27,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.p3.bartheway.AddItemActivity;
-import com.p3.bartheway.Database.ApiClient;
 import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.Database.Loan;
@@ -101,17 +96,21 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         final Intent intent = getIntent();
         b = intent.getExtras();
 
-        if(b.get("Connect").equals("true")) {
-            mDevice = b.getParcelable(BluetoothActivity.DEVICE_EXTRA);
-            mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
-            mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
-        } else {
-            mTxtReceive.setText("Not connected to Arduino");
+        //checks if any information were given from the previous activity and either connects to the arduino or does nothing
+        if(b != null) {
+            if (b.get("Connect").equals("true")) {
+                mDevice = b.getParcelable(BluetoothActivity.DEVICE_EXTRA);
+                mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
+                mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
+            } else {
+                mTxtReceive.setText("Not connected to arduino");
+            }
         }
         Log.d(TAG, "Ready");
 
         mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
 
+        //Clear inputs of textfields
         mBtnClearInput.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -129,15 +128,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         });
     }
 
-    public static String reverseTheSentence (String inputString){
+    //reverses the UID when called similar to how IT-service does it with their scanner
+    public static String reverse(String inputString){
         String[] words = inputString.split("\\s");
-
         String outputString = "";
-
         for (int i = words.length - 1; i >= 0; i--) {
             outputString = outputString + words[i];
         }
-
         return outputString;
     }
 
@@ -172,6 +169,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         swipeRefresh.setRefreshing(false);
     }
 
+
+    // get data from database and updates the recyclerview
     @Override
     public void onGetResult(List<Item> items) {
         mAdapter = new ItemRecyclerAdapter(items, this);
@@ -191,11 +190,10 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         this.student = student;
     }
 
+    //The Thread class that runs and listens for data sent via Bluetooth
     private class ReadInput implements Runnable {
-
         private boolean bStop = false;
         private Thread t;
-
         public ReadInput() {
             t = new Thread(this, "Input Thread");
             t.start();
@@ -224,18 +222,15 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         }
                         final String strInput = new String(buffer, 0, i);
                         String hex = strInput.toUpperCase();
-                        hex = reverseTheSentence(hex);
+                        hex = reverse(hex);
                         Integer cardUID = Integer.parseInt(hex, 16);
 
-                        mTxtReceive.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                presenter.getStudentData(cardUID);
-                                if (student != null) {
-                                    mTxtReceive.setText(student.get(0).getStudentName());
-                                } else{
-                                    Log.i("student", "is null");
-                                }
+                        mTxtReceive.post(() -> {
+                            presenter.getStudentData(cardUID);
+                            if (student != null) {
+                                mTxtReceive.setText(student.get(0).getStudentName());
+                            } else{
+                                Log.i("student", "is null");
                             }
                         });
 
@@ -258,6 +253,10 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     }
 
+    /**This calls disconnects the phone from the arduino if the activity is set on pause to avoid crashing. AsyncTask is a form of Thread
+     that runs in the background without disrupting anything
+     */
+
     private class DisConnectBT extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -271,16 +270,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 mReadThread.stop();
                 while (mReadThread.isRunning()) ; // Wait until it stops
                 mReadThread = null;
-
             }
-
             try {
                 mBTSocket.close();
             } catch (IOException e) {
 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-
             return null;
         }
 
@@ -295,10 +291,17 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     }
 
+    /**
+     * Used to make easier Toasts
+     * @param s
+     */
     private void msg(String s) {
         Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * Calls the disconnect method
+     */
     @Override
     protected void onPause() {
         if (mBTSocket != null && mIsBluetoothConnected) {
@@ -308,6 +311,9 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         super.onPause();
     }
 
+    /**
+     * Reestablishes the connection with the arduino
+     */
     @Override
     protected void onResume() {
         if (mBTSocket == null || !mIsBluetoothConnected) {
@@ -331,6 +337,9 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Connects to that arduino and starts running the ReadInput Thread
+     */
     private class ConnectBT extends AsyncTask<Void, Void, Void> {
         private boolean mConnectSuccessful = true;
 
@@ -342,6 +351,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         @Override
         protected Void doInBackground(Void... devices) {
 
+            //mDevice and mDeviceUUID is the values we got from BluetoothActivity
             try {
                 if (mBTSocket == null || !mIsBluetoothConnected) {
                     mBTSocket = mDevice.createInsecureRfcommSocketToServiceRecord(mDeviceUUID);
@@ -364,11 +374,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 Toast.makeText(getApplicationContext(), "Could not connect to device. Is it a Serial device? Also check if the UUID is correct in the settings", Toast.LENGTH_LONG).show();
                 finish();
             } else {
+                //successful connection so an instance of ReadInput is created and executed
                 msg("Connected to device");
                 mIsBluetoothConnected = true;
                 mReadThread = new ReadInput(); // Kick off input reader
             }
-
             progressDialog.dismiss();
         }
     }
