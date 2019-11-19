@@ -13,6 +13,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,6 +28,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.p3.bartheway.Database.ApiClient;
 import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.Database.Loan;
