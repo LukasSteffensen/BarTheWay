@@ -71,6 +71,7 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
+                Log.i("onFailure", "Fail");
             }
         });
     }

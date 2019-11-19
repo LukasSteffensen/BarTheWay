@@ -92,7 +92,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
             mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
         } else {
-            mTxtReceive.setText("Not connected to arduino");
+            mTxtReceive.setText("Not connected to Arduino");
         }
         Log.d(TAG, "Ready");
 
