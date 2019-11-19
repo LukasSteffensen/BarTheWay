@@ -3,6 +3,9 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import android.app.ProgressDialog;
@@ -12,6 +15,7 @@ import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,9 +30,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.p3.bartheway.AddItemActivity;
+import com.p3.bartheway.Database.ApiClient;
+import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
+import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
@@ -39,12 +51,14 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private ReadInput mReadThread = null;
 
     SwipeRefreshLayout swipeRefresh;
-
+    ApiInterface apiInterface;
     BrowsePresenter presenter;
 
     List<Item> items;
 
     List<Student> student;
+
+    Date date = new Date();
 
     private boolean mIsUserInitiatedDisconnect = false;
 
@@ -105,6 +119,12 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 if(b.get("Connect").equals("true")) {
                     mTxtReceive.setText("");
                 }
+//                This part right here was simply for testing at home without the Arduino parts.
+//                It should be moved to the correct spot which is going to be in the "Confirm loan onClick"
+//                byte returned = 0;
+//                Timestamp timestamp = new Timestamp(date.getTime());
+//                String title = mTxtGame.getText().toString().trim();
+//                saveLoan(title, card_uid, timestamp, returned);
             }
         });
     }
@@ -351,5 +371,58 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
             progressDialog.dismiss();
         }
+    }
+
+    /**
+     * Method that puts values into the database by calling the method "saveLoan" in ApiInterface
+     * @param title
+     * @param card_uid
+     * @param timestamp
+     * @param returned
+     */
+    private void saveLoan(final String title,
+                          final int card_uid,
+                          final Timestamp timestamp,
+                          final byte returned) {
+
+
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Loan> call =  apiInterface.saveLoan(title, card_uid, timestamp, returned);
+
+        call.enqueue(new Callback<Loan>() {
+            @Override
+            public void onResponse(@NonNull Call<Loan> call, @NonNull Response<Loan> response) {
+
+                Log.i("onResponse", "try");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().isSuccess();
+                    if (success) {
+                        Log.i("onResponse", "success");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "fail");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.i("onResponse", "is null or not successful");
+                    Log.i("onResponse", response.toString());
+                    Log.i("onResponse", response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Loan> call, @NonNull Throwable t) {
+                Log.i("onFailure", t.getLocalizedMessage());
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
     }
 }
