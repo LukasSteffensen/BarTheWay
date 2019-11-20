@@ -6,15 +6,20 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -65,6 +70,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private RecyclerView mRecyclerView;
     private ItemRecyclerAdapter mAdapter;
     private Button mBtnClearInput;
+    private Button mBtnConfirm;
     private Bundle b;
 
     private boolean mIsBluetoothConnected = false;
@@ -79,7 +85,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         setContentView(R.layout.activity_browse);
         ActivityHelper.initialize(this);
 
-        mTxtReceive = (TextView) findViewById(R.id.txtReceive);
+        mTxtReceive = findViewById(R.id.txtReceive);
         mTxtGame = findViewById(R.id.txtGame);
         mRecyclerView = findViewById(R.id.item_recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -105,29 +111,66 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
                 mMaxChars = b.getInt(BluetoothActivity.BUFFER_SIZE);
             } else {
-                mTxtReceive.setText("Not connected to arduino");
+                mTxtReceive.setText("Not connected to Arduino");
             }
         }
         Log.d(TAG, "Ready");
 
-        mBtnClearInput = (Button) findViewById(R.id.btnClearInput);
+        mBtnConfirm = findViewById(R.id.buttonConfirm);
 
-        //Clear inputs of textfields
-        mBtnClearInput.setOnClickListener(new OnClickListener() {
-
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
             @Override
-            public void onClick(View arg0) {
-                if(b.get("Connect").equals("true")) {
-                    mTxtReceive.setText("");
+            public void run() {
+                if (student != null) {
+                    if (student.get(0).getTitle() != null) {
+                        mBtnConfirm.setVisibility(View.INVISIBLE);
+                        returnGame();
+                    }
                 }
-//                This part right here was simply for testing at home without the Arduino parts.
-//                It should be moved to the correct spot which is going to be in the "Confirm loan onClick"
-//                byte returned = 0;
-//                Timestamp timestamp = new Timestamp(date.getTime());
-//                String title = mTxtGame.getText().toString().trim();
-//                saveLoan(title, card_uid, timestamp, returned);
+                if (!mTxtGame.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("")) {
+                    mBtnConfirm.setVisibility(View.VISIBLE);
+                } else {
+                    mBtnConfirm.setVisibility(View.INVISIBLE);
+                }
+
+                handler.postDelayed(this, 1000);
             }
         });
+
+
+        mBtnConfirm.setOnClickListener(v -> {
+            String title = mTxtGame.getText().toString().trim();
+            int card_uid = student.get(0).getCard_uid();
+            Timestamp timestampBorrow = new Timestamp(date.getTime());
+            byte returned = 0;
+            saveLoan(title, card_uid, timestampBorrow, returned);
+        });
+
+
+        mBtnClearInput = findViewById(R.id.btnClearInput);
+
+        //Clear inputs of text fields
+        mBtnClearInput.setOnClickListener(arg0 -> {
+            if(b.get("Connect").equals("true")) {
+                mTxtReceive.setText("");
+            }
+        });
+    }
+
+    private void returnGame() {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+
+        builder.setMessage("Is " + student.get(0).getStudentName() + " returning " + student.get(0).getTitle() + "?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    // write something here...
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.cancel());
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        student = null;
     }
 
     //reverses the UID when called similar to how IT-service does it with their scanner
@@ -179,7 +222,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
         this.items = items;
-        Log.i("hallo", ""+items.get(1).getMaxPlayers());
     }
 
     @Override
@@ -226,6 +268,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         String hex = strInput.toUpperCase();
                         hex = reverse(hex);
                         Integer cardUID = Integer.parseInt(hex, 16);
+                        Log.i("Card UID is ", "" + cardUID);
 
                         mTxtReceive.post(() -> {
                             presenter.getStudentData(cardUID);
@@ -255,7 +298,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     }
 
-    /**This calls disconnects the phone from the arduino if the activity is set on pause to avoid crashing. AsyncTask is a form of Thread
+    /**This calls disconnects the phone from the Arduino if the activity is set on pause to avoid crashing. AsyncTask is a form of Thread
      that runs in the background without disrupting anything
      */
 
@@ -389,17 +432,17 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
      * Method that puts values into the database by calling the method "saveLoan" in ApiInterface
      * @param title
      * @param card_uid
-     * @param timestamp
+     * @param timestampBorrow
      * @param returned
      */
     private void saveLoan(final String title,
                           final int card_uid,
-                          final Timestamp timestamp,
+                          final Timestamp timestampBorrow,
                           final byte returned) {
 
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Loan> call =  apiInterface.saveLoan(title, card_uid, timestamp, returned);
+        Call<Loan> call =  apiInterface.saveLoan(title, card_uid, timestampBorrow, returned);
 
         call.enqueue(new Callback<Loan>() {
             @Override
@@ -415,7 +458,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                                 Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Log.i("onResponse", "fail");
+                        Log.i("onResponse", response.body().getMessage());
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();

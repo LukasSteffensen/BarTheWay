@@ -15,13 +15,13 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("save.php")
     Call<Item> saveItem(
-            @Field("item_title") String title,
-            @Field("item_language") String language,
-            @Field("item_description") String description,
-            @Field("item_minplayers") int minPlayers,
-            @Field("item_maxplayers") int maxPlayers,
-            @Field("item_duration") String duration,
-            @Field("item_year") int year
+            @Field("title") String title,
+            @Field("language") String language,
+            @Field("description") String description,
+            @Field("minPlayers") int minPlayers,
+            @Field("maxPlayers") int maxPlayers,
+            @Field("duration") String duration,
+            @Field("year") int year
     );
 
     @FormUrlEncoded
@@ -29,7 +29,7 @@ public interface ApiInterface {
     Call<Loan> saveLoan(
             @Field("title") String title,
             @Field("card_uid") int card_uid,
-            @Field("timestamp") Timestamp timestamp,
+            @Field("timestampBorrow") Timestamp timestampBorrow,
             @Field("returned") byte returned
     );
 
