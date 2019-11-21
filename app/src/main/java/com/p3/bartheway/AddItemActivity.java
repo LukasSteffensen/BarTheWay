@@ -124,10 +124,6 @@ public class AddItemActivity extends AppCompatActivity {
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Log.i("onResponse", "is null or not successful");
-                    Log.i("onResponse", response.toString());
-                    Log.i("onResponse", response.errorBody().toString());
                 }
             }
 

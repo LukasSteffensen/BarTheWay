@@ -13,7 +13,7 @@ import retrofit2.http.Query;
 public interface ApiInterface {
 
     @FormUrlEncoded
-    @POST("save.php")
+    @POST("saveItem.php")
     Call<Item> saveItem(
             @Field("title") String title,
             @Field("language") String language,
@@ -25,12 +25,34 @@ public interface ApiInterface {
     );
 
     @FormUrlEncoded
-    @POST("loan.php")
+    @POST("saveLoan.php")
     Call<Loan> saveLoan(
-            @Field("title") String title,
             @Field("card_uid") int card_uid,
+            @Field("title") String title,
             @Field("timestampBorrow") Timestamp timestampBorrow,
             @Field("returned") byte returned
+    );
+
+    @FormUrlEncoded
+    @POST("returnLoan.php")
+    Call<Loan> returnLoan(
+            @Field("card_uid") int card_uid,
+            @Field("timestampReturn") Timestamp timestampReturn,
+            @Field("returned") byte returned
+    );
+
+    @FormUrlEncoded
+    @POST("updateItem.php")
+    Call<Item> updateItem(
+            @Field("title") String title,
+            @Field("card_uid") int card_uid
+    );
+
+    @FormUrlEncoded
+    @POST("updateStudent.php")
+    Call<Student> updateStudent(
+            @Field("title") String title,
+            @Field("card_uid") int card_uid
     );
 
     @GET("items.php")

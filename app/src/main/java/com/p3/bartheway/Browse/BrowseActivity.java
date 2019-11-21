@@ -2,6 +2,7 @@ package com.p3.bartheway.Browse;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -72,6 +73,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private Button mBtnClearInput;
     private Button mBtnConfirm;
     private Bundle b;
+    private boolean isAlertShowing = false;
 
     private boolean mIsBluetoothConnected = false;
 
@@ -122,8 +124,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (student != null) {
-                    if (student.get(0).getTitle() != null) {
+                if (student != null && !isAlertShowing) {
+                    if (student.get(0).getTitle() != null && !student.get(0).getTitle().equals("")) {
                         mBtnConfirm.setVisibility(View.INVISIBLE);
                         returnGame();
                     }
@@ -144,7 +146,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             int card_uid = student.get(0).getCard_uid();
             Timestamp timestampBorrow = new Timestamp(date.getTime());
             byte returned = 0;
-            saveLoan(title, card_uid, timestampBorrow, returned);
+            Log.i("Card UID", "" + card_uid);
+            Log.i("Title", title);
+            Log.i("Timestamp", "" + timestampBorrow);
+            Log.i("returned", "" + returned);
+            saveLoan(card_uid, title, timestampBorrow, returned);
         });
 
 
@@ -159,18 +165,23 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     }
 
     private void returnGame() {
+        isAlertShowing = true;
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
 
         builder.setMessage("Is " + student.get(0).getStudentName() + " returning " + student.get(0).getTitle() + "?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    // write something here...
+                    int card_uid = student.get(0).getCard_uid();
+                    String title = student.get(0).getTitle();
+                    Timestamp timestampReturn = new Timestamp(date.getTime());
+                    byte returned = 1;
+                    returnItem(card_uid, title, timestampReturn, returned);
+                    student=null;
+                    mTxtReceive.setText("");
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.cancel());
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
-        student = null;
     }
 
     //reverses the UID when called similar to how IT-service does it with their scanner
@@ -429,30 +440,97 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     }
 
     /**
-     * Method that puts values into the database by calling the method "saveLoan" in ApiInterface
+     * Method that does everything in the database when a loan is made by calling the methods
+     * saveLoan, updateStudentBorrow, and updateItemBorrow in ApiInterface
      * @param title
      * @param card_uid
      * @param timestampBorrow
      * @param returned
      */
-    private void saveLoan(final String title,
-                          final int card_uid,
+    private void saveLoan(final int card_uid,
+                          final String title,
                           final Timestamp timestampBorrow,
                           final byte returned) {
 
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Loan> call =  apiInterface.saveLoan(title, card_uid, timestampBorrow, returned);
+        Call<Loan> callLoan =  apiInterface.saveLoan(card_uid, title, timestampBorrow, returned);
 
-        call.enqueue(new Callback<Loan>() {
+        callLoan.enqueue(new Callback<Loan>() {
             @Override
             public void onResponse(@NonNull Call<Loan> call, @NonNull Response<Loan> response) {
 
-                Log.i("onResponse", "try");
+                Log.i("onResponse", "try Loan");
                 if (response.isSuccessful() && response.body()!= null) {
                     Boolean success = response.body().isSuccess();
                     if (success) {
-                        Log.i("onResponse", "success");
+                        Log.i("onResponse", "success Loan");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "loan" + response.body().getMessage());
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Loan> call, @NonNull Throwable t) {
+                Log.i("onFailure", "loan" + t.getLocalizedMessage());
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+        Call<Student> callStudent =  apiInterface.updateStudent(title, card_uid);
+
+        callStudent.enqueue(new Callback<Student>() {
+            @Override
+            public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
+
+                Log.i("onResponse", "try Student");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().getSuccess();
+                    if (success) {
+                        Log.i("onResponse", "success student");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "fail student");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
+                Log.i("onFailure", "failure student");
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+        Call<Item> callItem =  apiInterface.updateItem(title, card_uid);
+
+        callItem.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
+
+                Log.i("onResponse", "try item");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().getSuccess();
+                    if (success) {
+                        Log.i("onResponse", "success item");
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
@@ -463,16 +541,128 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    Log.i("onResponse", "is null or not successful");
-                    Log.i("onResponse", response.toString());
-                    Log.i("onResponse", response.errorBody().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
+                Log.i("onFailure", t.getLocalizedMessage());
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+
+    /**
+     * Method that does everything in the database when an item is returned, by calling the methods
+     * updateLoan, updateStudent, and updateItem in ApiInterface
+     * @param title
+     * @param card_uid
+     * @param timestampReturn
+     * @param returned
+     */
+    private void returnItem(final int card_uid,
+                          final String title,
+                          final Timestamp timestampReturn,
+                          final byte returned) {
+
+
+        apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Loan> callReturnLoan =  apiInterface.returnLoan(card_uid, timestampReturn, returned);
+
+        callReturnLoan.enqueue(new Callback<Loan>() {
+            @Override
+            public void onResponse(@NonNull Call<Loan> call, @NonNull Response<Loan> response) {
+
+                Log.i("onResponse", "try return loan");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().isSuccess();
+                    if (success) {
+                        Log.i("onResponse", "success return loan");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "return loan " + response.body().getMessage());
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Loan> call, @NonNull Throwable t) {
-                Log.i("onFailure", t.getLocalizedMessage());
+                Log.i("onFailure", "return loan" + t.getLocalizedMessage());
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+        Call<Student> callStudent =  apiInterface.updateStudent(null, card_uid);
+
+        callStudent.enqueue(new Callback<Student>() {
+            @Override
+            public void onResponse(@NonNull Call<Student> call, @NonNull Response<Student> response) {
+
+                Log.i("onResponse", "try update student");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().getSuccess();
+                    if (success) {
+                        Log.i("onResponse", "update student success");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "fail update student");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
+                Log.i("onFailure", "update student");
+                Toast.makeText(BrowseActivity.this,
+                        t.getLocalizedMessage(),
+                        Toast.LENGTH_LONG).show();
+
+            }
+        });
+        Call<Item> callItem =  apiInterface.updateItem(title, -1);
+
+        callItem.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
+
+                Log.i("onResponse", "try update item");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().getSuccess();
+                    if (success) {
+                        Log.i("onResponse", "update item success");
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Log.i("onResponse", "update item " + response.body().getMessage());
+                        Toast.makeText(BrowseActivity.this,
+                                response.body().getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
+                Log.i("onFailure", "update item " + t.getLocalizedMessage());
                 Toast.makeText(BrowseActivity.this,
                         t.getLocalizedMessage(),
                         Toast.LENGTH_LONG).show();
