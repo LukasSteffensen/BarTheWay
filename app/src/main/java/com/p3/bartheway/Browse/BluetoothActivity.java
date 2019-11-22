@@ -7,13 +7,7 @@ import android.os.Bundle;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,7 +28,6 @@ public class BluetoothActivity extends AppCompatActivity {
     private ListView listView;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
-    private static final int SETTINGS = 20;
     private UUID mDeviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private int mBufferSize = 50000; //Default
     public static final String DEVICE_EXTRA = "SOCKET";
@@ -43,6 +36,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private static final String DEVICE_LIST_SELECTED = "devicelistselected";
     public static final String BUFFER_SIZE = "buffersize";
     private static final String TAG = "BluetoothActivity";
+    Intent intent1;
 
 
     @Override
@@ -55,6 +49,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
+        intent1 = getIntent();
 
        // Sets up the listView with the adapter and tries to get any old list (if the screen was rotated for example)
         if (savedInstanceState != null) {
@@ -107,17 +102,13 @@ public class BluetoothActivity extends AppCompatActivity {
         });
     }
 
-    protected void onPause() {
-// TODO Auto-generated method stub
-        super.onPause();
-    }
-
     @Override
-    protected void onStop() {
-// TODO Auto-generated method stub
-        super.onStop();
+    protected void onResume() {
+        if(intent1.hasExtra("click")) {
+            connect.callOnClick();
+        }
+        super.onResume();
     }
-
 
     /**Whenever the search  button is clicked and the user has to enable or disable Bluetooth, the OnActivityResult is called.
      * @param requestCode
@@ -136,29 +127,6 @@ public class BluetoothActivity extends AppCompatActivity {
                 } else {
                     msg("Bluetooth couldn't be enabled");
                 }
-
-                break;
-
-            // Maybe all of the preferences stuff is just unnecessary
-            case SETTINGS: //If the settings have been updated
-                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-                String uuid = prefs.getString("prefUuid", "Null");
-                mDeviceUUID = UUID.fromString(uuid);
-                Log.d(TAG, "UUID: " + uuid);
-                String bufSize = prefs.getString("prefTextBuffer", "Null");
-                mBufferSize = Integer.parseInt(bufSize);
-
-                String orientation = prefs.getString("prefOrientation", "Null");
-                Log.d(TAG, "Orientation: " + orientation);
-                if (orientation.equals("Landscape")) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-                } else if (orientation.equals("Portrait")) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-                } else if (orientation.equals("Auto")) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
-                }
-                break;
-            default:
                 break;
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -200,7 +168,6 @@ public class BluetoothActivity extends AppCompatActivity {
         protected List<BluetoothDevice> doInBackground(Void... params) {
             Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
             return new ArrayList<>(pairedDevices);
-
         }
 
         @Override
@@ -214,32 +181,5 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         }
 
-    }
-
-    /**
-     * Custom adapter to show the current devices in the list. This is a bit of an overkill for this
-     * project, but I figured it would be good learning
-     * Most of the code is lifted from somewhere but I can't find the link anymore
-     * @author ryder
-     *
-     */
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-// Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.homescreen, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                Intent intent = new Intent(BluetoothActivity.this, PreferencesActivity.class);
-                startActivityForResult(intent, SETTINGS);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }
