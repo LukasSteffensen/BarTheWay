@@ -3,7 +3,9 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -172,9 +174,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                     byte returned = 1;
                     returnItem(card_uid, title, timestampReturn, returned);
                     student=null;
+                    isAlertShowing = false;
                     mTxtReceive.setText("");
-                })
-                .setNegativeButton("No", (dialog, which) -> dialog.cancel());
+                }).setNegativeButton("No", ((dialog, which) -> {
+                    student=null;
+                    isAlertShowing = false;
+                    dialog.cancel();
+        }));
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
@@ -225,8 +231,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     @Override
     public void onGetResult(List<Item> items) {
         mAdapter = new ItemRecyclerAdapter(items, this);
-        mAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
         this.items = items;
     }
 
