@@ -28,7 +28,6 @@ public class BluetoothActivity extends AppCompatActivity {
     private ListView listView;
     private BluetoothAdapter mBTAdapter;
     private static final int BT_ENABLE_REQUEST = 10; // This is the code we use for BT Enable
-    private static final int SETTINGS = 20;
     private UUID mDeviceUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
     private int mBufferSize = 50000; //Default
     public static final String DEVICE_EXTRA = "SOCKET";
@@ -37,6 +36,7 @@ public class BluetoothActivity extends AppCompatActivity {
     private static final String DEVICE_LIST_SELECTED = "devicelistselected";
     public static final String BUFFER_SIZE = "buffersize";
     private static final String TAG = "BluetoothActivity";
+    Intent intent1;
 
 
     @Override
@@ -49,6 +49,7 @@ public class BluetoothActivity extends AppCompatActivity {
 
         listView = (ListView) findViewById(R.id.listView);
 
+        intent1 = getIntent();
 
        // Sets up the listView with the adapter and tries to get any old list (if the screen was rotated for example)
         if (savedInstanceState != null) {
@@ -101,17 +102,13 @@ public class BluetoothActivity extends AppCompatActivity {
         });
     }
 
-    protected void onPause() {
-// TODO Auto-generated method stub
-        super.onPause();
-    }
-
     @Override
-    protected void onStop() {
-// TODO Auto-generated method stub
-        super.onStop();
+    protected void onResume() {
+        if(intent1.hasExtra("click")) {
+            connect.callOnClick();
+        }
+        super.onResume();
     }
-
 
     /**Whenever the search  button is clicked and the user has to enable or disable Bluetooth, the OnActivityResult is called.
      * @param requestCode

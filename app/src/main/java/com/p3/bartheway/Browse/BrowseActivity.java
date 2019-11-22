@@ -3,9 +3,7 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
@@ -206,7 +204,9 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.bluetooth:
-                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+                Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
+                intent.putExtra("click", "click");
+                startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
     }
@@ -469,7 +469,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", "loan" + response.body().getMessage());
                         Toast.makeText(BrowseActivity.this,
@@ -502,7 +501,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", "fail student");
                         Toast.makeText(BrowseActivity.this,
@@ -535,7 +533,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", response.body().getMessage());
                         Toast.makeText(BrowseActivity.this,
@@ -585,7 +582,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", "return loan " + response.body().getMessage());
                         Toast.makeText(BrowseActivity.this,
@@ -618,7 +614,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         Toast.makeText(BrowseActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", "fail update student");
                         Toast.makeText(BrowseActivity.this,
@@ -631,39 +626,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             @Override
             public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
                 Log.i("onFailure", "update student");
-                Toast.makeText(BrowseActivity.this,
-                        t.getLocalizedMessage(),
-                        Toast.LENGTH_LONG).show();
-
-            }
-        });
-        Call<Item> callItem =  apiInterface.updateItem(title, -1);
-
-        callItem.enqueue(new Callback<Item>() {
-            @Override
-            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
-
-                Log.i("onResponse", "try update item");
-                if (response.isSuccessful() && response.body()!= null) {
-                    Boolean success = response.body().getSuccess();
-                    if (success) {
-                        Log.i("onResponse", "update item success");
-                        Toast.makeText(BrowseActivity.this,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Log.i("onResponse", "update item " + response.body().getMessage());
-                        Toast.makeText(BrowseActivity.this,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
-                Log.i("onFailure", "update item " + t.getLocalizedMessage());
                 Toast.makeText(BrowseActivity.this,
                         t.getLocalizedMessage(),
                         Toast.LENGTH_LONG).show();
