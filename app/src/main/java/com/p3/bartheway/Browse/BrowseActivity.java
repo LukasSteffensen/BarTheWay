@@ -30,6 +30,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.p3.bartheway.AddItemActivity;
 import com.p3.bartheway.Database.ApiClient;
 import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
@@ -50,7 +51,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private ReadInput mReadThread = null;
 
     SwipeRefreshLayout swipeRefresh;
-    ApiInterface apiInterface;
     BrowsePresenter presenter;
 
     List<Item> items;
@@ -125,13 +125,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                         returnGame();
                     }
                 }
-                if (!mTxtGame.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("")) {
+                if (!mTxtGame.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("Not connected to Arduino")) {
                     mBtnConfirm.setVisibility(View.VISIBLE);
                 } else {
                     mBtnConfirm.setVisibility(View.INVISIBLE);
                 }
 
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 500);
             }
         });
 
@@ -141,16 +141,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             int card_uid = student.get(0).getCard_uid();
             Timestamp timestampBorrow = new Timestamp(date.getTime());
             byte returned = 0;
-            Log.i("Card UID", "" + card_uid);
-            Log.i("Title", title);
-            Log.i("Timestamp", "" + timestampBorrow);
-            Log.i("returned", "" + returned);
             presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
             student = null;
             mTxtGame.setText("");
             mTxtReceive.setText("");
         });
-
 
         mBtnClearInput = findViewById(R.id.btnClearInput);
 
@@ -207,9 +202,19 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.bluetooth:
-                Intent intent = new Intent(getApplicationContext(), BluetoothActivity.class);
-                intent.putExtra("click", "click");
-                startActivity(intent);
+                Intent intentBluetooth = new Intent(getApplicationContext(), BluetoothActivity.class);
+                intentBluetooth.putExtra("click", "click");
+                startActivity(intentBluetooth);
+            case R.id.current_borrowers:
+                Intent intentCurrentBorrowers = new Intent(getApplicationContext(), CurrentBorrowersActivity.class);
+                startActivity(intentCurrentBorrowers);
+            case R.id.previous_borrowers:
+            case R.id.account_settings:
+            case R.id.delete_game:
+            case R.id.add_game:
+                Intent intentAddItem = new Intent(getApplicationContext(), AddItemActivity.class);
+                startActivity(intentAddItem);
+            case R.id.logout:
         }
         return super.onOptionsItemSelected(item);
     }
@@ -230,7 +235,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     }
 
 
-    // get data from database and updates the recyclerview
+    // get data from database and updates the recyclerView
     @Override
     public void onGetResult(List<Item> items) {
         mAdapter = new ItemRecyclerAdapter(items, this);
@@ -442,24 +447,4 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             progressDialog.dismiss();
         }
     }
-
-    /**
-     * Method that does everything in the database when a loan is made by calling the methods
-     * saveLoan, updateStudentBorrow, and updateItemBorrow in ApiInterface
-     * @param title
-     * @param card_uid
-     * @param timestampBorrow
-     * @param returned
-     */
-
-
-    /**
-     * Method that does everything in the database when an item is returned, by calling the methods
-     * updateLoan, updateStudent, and updateItem in ApiInterface
-     * @param title
-     * @param card_uid
-     * @param timestampReturn
-     * @param returned
-     */
-
 }

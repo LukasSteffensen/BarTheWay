@@ -61,4 +61,10 @@ public interface ApiInterface {
     @GET("student.php")
     Call<List<Student>> getStudent(@Query("card_uid") int card_uid);
 
+    @GET("currentBorrowers.php")
+    Call<List<Student>> getBorrowers();
+
+    @GET("currentLoans.php")
+    Call<List<Loan>> getLoans();
+
 }

@@ -24,14 +24,12 @@ public class LoginActivity extends AppCompatActivity {
         btnStudent = findViewById(R.id.btnStudent);
 
         btnBartender.setOnClickListener(v -> {
-            Intent i = new Intent(getApplicationContext(), BrowseActivity.class);
+            Intent i = new Intent(getApplicationContext(), BartenderLoginActivity.class);
             i.putExtra("Connect", "false");
             startActivity(i);
         });
 
         btnStudent.setOnClickListener(v -> {
-            Intent i = new Intent(getApplicationContext(), AddItemActivity.class);
-            startActivity(i);
         });
     }
 }

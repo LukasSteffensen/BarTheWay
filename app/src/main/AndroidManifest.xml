@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -15,17 +15,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="com.p3.bartheway.Login.LoginActivity">
+        <activity android:name=".Login.BartenderLoginActivity"></activity>
+        <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.p3.bartheway.AddItemActivity"/>
-        <activity android:name="com.p3.bartheway.Browse.TestActivity" />
-        <activity android:name="com.p3.bartheway.Browse.BrowseActivity" />
-        <activity android:name="com.p3.bartheway.Browse.BluetoothActivity">
-        </activity>
+        <activity android:name=".AddItemActivity" />
+        <activity android:name=".Browse.TestActivity" />
+        <activity android:name=".Browse.BrowseActivity" />
+        <activity android:name=".Browse.BluetoothActivity"></activity>
     </application>
 
 </manifest>

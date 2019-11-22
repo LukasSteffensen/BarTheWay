@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.p3.bartheway.R;
 
+// not using this fragment for now
+
 public class BartenderLoginFragment extends Fragment {
 
         @Override

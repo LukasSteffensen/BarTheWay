@@ -76,7 +76,14 @@ public class BrowsePresenter {
             }
         });
     }
-
+    /**
+     * Method that does everything in the database when a loan is made by calling the methods
+     * saveLoan, updateStudentBorrow, and updateItemBorrow in ApiInterface
+     * @param title
+     * @param card_uid
+     * @param timestampBorrow
+     * @param returned
+     */
     public void saveLoan(Context context, final int card_uid,
                           final String title,
                           final Timestamp timestampBorrow,
@@ -181,7 +188,14 @@ public class BrowsePresenter {
                 }
             });
         }
-
+        /**
+     * Method that does everything in the database when an item is returned, by calling the methods
+     * updateLoan, updateStudent, and updateItem in ApiInterface
+     * @param title
+     * @param card_uid
+     * @param timestampReturn
+     * @param returned
+     */
     public void returnItem(Context context, final int card_uid,
                             final String title,
                             final Timestamp timestampReturn,
@@ -242,5 +256,4 @@ public class BrowsePresenter {
             }
         });
     }
-    }
-
+}
