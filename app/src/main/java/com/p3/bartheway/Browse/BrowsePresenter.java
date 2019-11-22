@@ -200,14 +200,10 @@ public class BrowsePresenter {
                     Boolean success = response.body().isSuccess();
                     if (success) {
                         Log.i("onResponse", "success return loan");
-                        Toast.makeText(context,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                     //   Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Log.i("onResponse", "return loan " + response.body().getMessage());
-                        Toast.makeText(context,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -215,13 +211,11 @@ public class BrowsePresenter {
             @Override
             public void onFailure(@NonNull Call<Loan> call, @NonNull Throwable t) {
                 Log.i("onFailure", "return loan" + t.getLocalizedMessage());
-                Toast.makeText(context,
-                        t.getLocalizedMessage(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
             }
         });
-        Call<Student> callStudent =  apiInterface.updateStudent(null, card_uid);
+        Call<Student> callStudent =  apiInterface.updateStudent("", card_uid);
 
         callStudent.enqueue(new Callback<Student>() {
             @Override
@@ -232,14 +226,10 @@ public class BrowsePresenter {
                     Boolean success = response.body().getSuccess();
                     if (success) {
                         Log.i("onResponse", "update student success");
-                        Toast.makeText(context,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Log.i("onResponse", "fail update student");
-                        Toast.makeText(context,
-                                response.body().getMessage(),
-                                Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -247,9 +237,7 @@ public class BrowsePresenter {
             @Override
             public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
                 Log.i("onFailure", "update student");
-                Toast.makeText(context,
-                        t.getLocalizedMessage(),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 
             }
         });

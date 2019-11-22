@@ -146,6 +146,9 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             Log.i("Timestamp", "" + timestampBorrow);
             Log.i("returned", "" + returned);
             presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
+            student = null;
+            mTxtGame.setText("");
+            mTxtReceive.setText("");
         });
 
 
