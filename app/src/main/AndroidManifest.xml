@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Login.BartenderLoginActivity"></activity>
+        <activity android:name=".Browse.DeleteItemActivity"></activity>
+        <activity android:name=".Login.BartenderLoginActivity" />
         <activity android:name=".Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,7 +27,7 @@
         <activity android:name=".AddItemActivity" />
         <activity android:name=".Browse.TestActivity" />
         <activity android:name=".Browse.BrowseActivity" />
-        <activity android:name=".Browse.BluetoothActivity"></activity>
+        <activity android:name=".Browse.BluetoothActivity" />
     </application>
 
 </manifest>

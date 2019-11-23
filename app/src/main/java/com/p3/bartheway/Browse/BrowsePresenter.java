@@ -196,7 +196,7 @@ public class BrowsePresenter {
      * @param timestampReturn
      * @param returned
      */
-    public void returnItem(Context context, final int card_uid,
+    void returnItem(Context context, final int card_uid,
                             final String title,
                             final Timestamp timestampReturn,
                             final byte returned) {
@@ -252,6 +252,28 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<Student> call, @NonNull Throwable t) {
                 Log.i("onFailure", "update student");
                 Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
+    }
+    void deleteItem(String title) {
+        // put call to the ApiInterface method also called deleteItem()
+
+        ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
+        Call<Item> call = apiInterface.deleteItem(title);
+        call.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    boolean success = response.body().getSuccess();
+                    if (success){
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
 
             }
         });

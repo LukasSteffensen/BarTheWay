@@ -67,4 +67,8 @@ public interface ApiInterface {
     @GET("currentLoans.php")
     Call<List<Loan>> getLoans();
 
+
+    @FormUrlEncoded
+    @POST("deleteItem.php")
+    Call<Item> deleteItem(@Field("title") String title);
 }

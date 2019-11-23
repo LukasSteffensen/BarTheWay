@@ -15,7 +15,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -31,16 +30,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p3.bartheway.AddItemActivity;
-import com.p3.bartheway.Database.ApiClient;
-import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
-import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
+import com.p3.bartheway.Login.LoginActivity;
 import com.p3.bartheway.R;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
@@ -205,16 +198,26 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 Intent intentBluetooth = new Intent(getApplicationContext(), BluetoothActivity.class);
                 intentBluetooth.putExtra("click", "click");
                 startActivity(intentBluetooth);
+                return true;
             case R.id.current_borrowers:
                 Intent intentCurrentBorrowers = new Intent(getApplicationContext(), CurrentBorrowersActivity.class);
                 startActivity(intentCurrentBorrowers);
+                return true;
             case R.id.previous_borrowers:
             case R.id.account_settings:
             case R.id.delete_game:
+                Intent intentDeleteItem = new Intent(getApplicationContext(), DeleteItemActivity.class);
+                startActivity(intentDeleteItem);
+                return true;
             case R.id.add_game:
+                Log.i("case ", "add item");
                 Intent intentAddItem = new Intent(getApplicationContext(), AddItemActivity.class);
                 startActivity(intentAddItem);
+                return true;
             case R.id.logout:
+                Intent intentLogOut = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intentLogOut);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

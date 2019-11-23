@@ -23,12 +23,17 @@ public class BartenderLoginActivity extends AppCompatActivity {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         switch (keyCode) {
             case (66):
-                if (Integer.parseInt(editTextPassword.getText().toString()) == (password)){
-                    Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
-                    intent.putExtra("Connect", "false");
-                    startActivity(intent);
+                if (!editTextPassword.getText().toString().equals("")) {
+                    if (Integer.parseInt(editTextPassword.getText().toString()) == (password)){
+                        Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
+                        intent.putExtra("Connect", "false");
+                        startActivity(intent);
+                    } else {
+                        editTextPassword.setError("Incorrect password");
+                    }
+
                 } else {
-                    editTextPassword.setError("Incorrect password");
+                    editTextPassword.setError("Please enter the password");
                 }
             default:
                 return super.onKeyUp(keyCode,event);
