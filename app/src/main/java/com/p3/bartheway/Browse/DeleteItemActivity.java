@@ -58,7 +58,7 @@ public class DeleteItemActivity extends AppCompatActivity implements ItemRecycle
 
     @Override
     public void onGetResult(List<Item> items) {
-        mAdapter = new ItemRecyclerAdapter(items, this);
+        mAdapter = new ItemRecyclerAdapter(items, this, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         this.items = items;

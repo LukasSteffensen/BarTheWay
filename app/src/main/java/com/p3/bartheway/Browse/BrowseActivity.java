@@ -20,6 +20,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -243,7 +244,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     // get data from database and updates the recyclerView
     @Override
     public void onGetResult(List<Item> items) {
-        mAdapter = new ItemRecyclerAdapter(items, this);
+        mAdapter = new ItemRecyclerAdapter(items, this, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         this.items = items;
