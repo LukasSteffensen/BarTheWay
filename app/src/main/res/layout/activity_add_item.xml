@@ -43,6 +43,7 @@
             android:id="@+id/minPlayers"
             android:hint="Minimum players"
             android:textSize="25sp"
+            android:inputType="number"
             android:layout_below="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +53,7 @@
         <EditText
             android:id="@+id/maxPlayers"
             android:hint="Maximum players"
+            android:inputType="number"
             android:textSize="25sp"
             android:layout_below="@+id/minPlayers"
             android:layout_width="match_parent"
@@ -70,6 +72,7 @@
         <EditText
             android:id="@+id/year"
             android:hint="Year"
+            android:inputType="number"
             android:textSize="25sp"
             android:layout_below="@+id/duration"
             android:layout_width="match_parent"

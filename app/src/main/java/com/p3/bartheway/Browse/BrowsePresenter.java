@@ -30,7 +30,7 @@ public class BrowsePresenter {
                 .create(ApiInterface.class);
     }
 
-    void getData() {
+    void getItemData() {
 
         view.showLoading();
 
@@ -73,6 +73,43 @@ public class BrowsePresenter {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
                 Log.i("onFailure", "Fail");
+            }
+        });
+    }
+    void getCurrentLoans(){
+
+        view.showLoading();
+
+        Call<List<Student>> callStudents = apiInterface.getBorrowers();
+        callStudents.enqueue(new Callback<List<Student>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onGetStudent(response.body());
+                    Log.i("onResponse", response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
+                Log.i("getCurrentBorrowers", "Fail");
+            }
+        });
+
+        Call<List<Loan>> callLoans = apiInterface.getLoans();
+        callLoans.enqueue(new Callback<List<Loan>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Loan>> call, @NonNull Response<List<Loan>> response) {
+                view.hideLoading();
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onGetLoans(response.body());
+                    Log.i("onResponse", response.body().toString());
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Loan>> call, @NonNull Throwable t) {
+                Log.i("getCurrentLoans", "Fail");
             }
         });
     }
@@ -267,6 +304,9 @@ public class BrowsePresenter {
                 if (response.isSuccessful() && response.body() != null) {
                     boolean success = response.body().getSuccess();
                     if (success){
+                        Log.i("delete item", response.body().toString());
+                    } else {
+                        Log.i("delete item", response.body().toString());
 
                     }
                 }
@@ -274,8 +314,10 @@ public class BrowsePresenter {
 
             @Override
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
+                Log.i("delete item", t.getLocalizedMessage());
 
             }
         });
     }
+
 }

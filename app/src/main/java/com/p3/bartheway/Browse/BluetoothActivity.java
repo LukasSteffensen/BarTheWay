@@ -36,7 +36,6 @@ public class BluetoothActivity extends AppCompatActivity {
     private static final String DEVICE_LIST_SELECTED = "devicelistselected";
     public static final String BUFFER_SIZE = "buffersize";
     private static final String TAG = "BluetoothActivity";
-    Intent intent1;
 
 
     @Override
@@ -48,8 +47,6 @@ public class BluetoothActivity extends AppCompatActivity {
         connect = (Button) findViewById(R.id.button_connect);
 
         listView = (ListView) findViewById(R.id.listView);
-
-        intent1 = getIntent();
 
        // Sets up the listView with the adapter and tries to get any old list (if the screen was rotated for example)
         if (savedInstanceState != null) {
@@ -104,9 +101,6 @@ public class BluetoothActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if(intent1.hasExtra("click")) {
-            connect.callOnClick();
-        }
         super.onResume();
     }
 

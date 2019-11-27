@@ -27,7 +27,7 @@ public class AddItemActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editor);
+        setContentView(R.layout.activity_add_item);
 
         editTextTitle = findViewById(R.id.title);
         editTextLanguage = findViewById(R.id.language);
@@ -56,14 +56,28 @@ public class AddItemActivity extends AppCompatActivity {
                 String minPlayersString = editTextMinPlayers.getText().toString().trim();
                 String maxPlayersString = editTextMaxPlayers.getText().toString().trim();
                 String yearString = editTextYear.getText().toString().trim();
+                int minPlayers = 1, maxPlayers = 20, year = 1;
 
                 String title = editTextTitle.getText().toString().trim();
                 String language = editTextLanguage.getText().toString().trim();
                 String description = editTextDescription.getText().toString().trim();
-                int minPlayers = Integer.parseInt(minPlayersString);
-                int maxPlayers = Integer.parseInt(maxPlayersString);
+                if (!editTextMinPlayers.getText().toString().equals("")) {
+                    minPlayers = Integer.parseInt(minPlayersString);
+                }
+                if (!editTextMaxPlayers.getText().toString().equals("")) {
+                    maxPlayers = Integer.parseInt(maxPlayersString);
+                }
                 String duration = editTextDuration.getText().toString().trim();
-                int year = Integer.parseInt(yearString);
+                if (!editTextYear.getText().toString().equals("")) {
+                    year = Integer.parseInt(yearString);
+                }
+
+                if (title.contains("'")) {
+                    title = title.replaceAll("'", "''");
+                }
+                if (description.contains("'")) {
+                    description = description.replaceAll("'", "''");
+                }
 
                 if (title.isEmpty()) {
                     editTextTitle.setError("Please enter a title");
@@ -83,8 +97,7 @@ public class AddItemActivity extends AppCompatActivity {
                     Toast.makeText(this,
                             "Amount of players cannot be less than 1",
                             Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     saveItem(title, language, description, minPlayers, maxPlayers, duration, year);
                 }
                 return true;
@@ -117,7 +130,6 @@ public class AddItemActivity extends AppCompatActivity {
                         Toast.makeText(AddItemActivity.this,
                                 response.body().getMessage(),
                                 Toast.LENGTH_SHORT).show();
-                        finish();
                     } else {
                         Log.i("onResponse", "fail");
                         Toast.makeText(AddItemActivity.this,

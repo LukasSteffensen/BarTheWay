@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.p3.bartheway.AddItemActivity;
 import com.p3.bartheway.Database.Item;
+import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.Login.LoginActivity;
 import com.p3.bartheway.R;
@@ -84,10 +85,10 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
         presenter = new BrowsePresenter(this);
-        presenter.getData();
+        presenter.getItemData();
 
         swipeRefresh.setOnRefreshListener(
-                () -> presenter.getData()
+                () -> presenter.getItemData()
         );
 
 
@@ -131,6 +132,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
         mBtnConfirm.setOnClickListener(v -> {
             String title = mTxtGame.getText().toString().trim();
+            title = title.replaceAll("'", "''");
             int card_uid = student.get(0).getCard_uid();
             Timestamp timestampBorrow = new Timestamp(date.getTime());
             byte returned = 0;
@@ -159,6 +161,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 .setPositiveButton("Yes", (dialog, which) -> {
                     int card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
+                    title = title.replaceAll("'", "''");
                     Timestamp timestampReturn = new Timestamp(date.getTime());
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
@@ -196,7 +199,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         switch (item.getItemId()){
             case R.id.bluetooth:
                 Intent intentBluetooth = new Intent(getApplicationContext(), BluetoothActivity.class);
-                intentBluetooth.putExtra("click", "click");
                 startActivity(intentBluetooth);
                 return true;
             case R.id.current_borrowers:
@@ -250,6 +252,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     @Override
     public void onErrorLoading(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetLoans(List<Loan> loans) {
+
     }
 
     @Override

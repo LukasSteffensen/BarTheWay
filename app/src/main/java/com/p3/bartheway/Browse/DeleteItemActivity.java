@@ -1,30 +1,19 @@
 package com.p3.bartheway.Browse;
 
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.Toast;
 
-import com.p3.bartheway.Browse.BrowsePresenter;
-import com.p3.bartheway.Browse.BrowseView;
-import com.p3.bartheway.Browse.ItemRecyclerAdapter;
-import com.p3.bartheway.Database.ApiClient;
-import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
+import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
-import java.sql.Timestamp;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DeleteItemActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView {
 
@@ -49,10 +38,10 @@ public class DeleteItemActivity extends AppCompatActivity implements ItemRecycle
         swipeRefresh = findViewById(R.id.deleteItem_swipeRefresh);
 
         presenter = new BrowsePresenter(this);
-        presenter.getData();
+        presenter.getItemData();
 
         swipeRefresh.setOnRefreshListener(
-                () -> presenter.getData()
+                () -> presenter.getItemData()
         );
 
     }
@@ -78,6 +67,11 @@ public class DeleteItemActivity extends AppCompatActivity implements ItemRecycle
     @Override
     public void onErrorLoading(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onGetLoans(List<Loan> loans) {
+
     }
 
     @Override

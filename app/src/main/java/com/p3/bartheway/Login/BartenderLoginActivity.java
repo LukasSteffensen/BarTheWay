@@ -10,25 +10,26 @@ import android.widget.EditText;
 import com.p3.bartheway.Browse.BrowseActivity;
 import com.p3.bartheway.R;
 
+import static android.view.KeyEvent.KEYCODE_ENTER;
 import static android.view.KeyEvent.KEYCODE_NUMPAD_ENTER;
 
 public class BartenderLoginActivity extends AppCompatActivity {
-
-    private int password = 9999;
-    int KEYCODE_ENTER = 66;
 
     private EditText editTextPassword;
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+
         switch (keyCode) {
-            case (66):
+            case (KEYCODE_ENTER):
                 if (!editTextPassword.getText().toString().equals("")) {
+                    int password = 9999;
                     if (Integer.parseInt(editTextPassword.getText().toString()) == (password)){
                         Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
                         intent.putExtra("Connect", "false");
                         startActivity(intent);
                     } else {
+                        editTextPassword.setText("");
                         editTextPassword.setError("Incorrect password");
                     }
 
@@ -36,6 +37,10 @@ public class BartenderLoginActivity extends AppCompatActivity {
                     editTextPassword.setError("Please enter the password");
                 }
             default:
+                if (editTextPassword.length() == 10) {
+                    editTextPassword.setText("");
+                    editTextPassword.setError("Password too large");
+                }
                 return super.onKeyUp(keyCode,event);
         }
     }
