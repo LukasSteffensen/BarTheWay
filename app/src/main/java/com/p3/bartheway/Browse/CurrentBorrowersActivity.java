@@ -61,9 +61,8 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
 
     @Override
     public void onGetLoans(List<Loan> loans) {
-        mAdapter = new LoanRecyclerAdapter(loanList, studentList, this);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        loanList = loans;
+        presenter.getCurrentBorrowers();
     }
 
 
@@ -78,7 +77,10 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
     }
 
     @Override
-    public void onGetStudent(List<Student> student) {
-
+    public void onGetStudent(List<Student> students) {
+        studentList = students;
+        mAdapter = new LoanRecyclerAdapter(loanList, studentList, this);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 }

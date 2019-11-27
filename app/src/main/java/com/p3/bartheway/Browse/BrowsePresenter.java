@@ -76,7 +76,7 @@ public class BrowsePresenter {
             }
         });
     }
-    void getCurrentLoans(){
+    void getCurrentBorrowers(){
 
         view.showLoading();
 
@@ -86,7 +86,7 @@ public class BrowsePresenter {
             public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
-                    Log.i("onResponse", response.body().toString());
+                    Log.i("getCurrentBorrowers", "success");
                 }
             }
 
@@ -95,7 +95,8 @@ public class BrowsePresenter {
                 Log.i("getCurrentBorrowers", "Fail");
             }
         });
-
+    }
+    void getCurrentLoans() {
         Call<List<Loan>> callLoans = apiInterface.getLoans();
         callLoans.enqueue(new Callback<List<Loan>>() {
             @Override
@@ -103,7 +104,7 @@ public class BrowsePresenter {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetLoans(response.body());
-                    Log.i("onResponse", response.body().toString());
+                    Log.i("getCurrentLoans", "success");
                 }
             }
 
