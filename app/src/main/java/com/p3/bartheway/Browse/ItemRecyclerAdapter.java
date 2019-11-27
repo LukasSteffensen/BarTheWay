@@ -1,5 +1,8 @@
 package com.p3.bartheway.Browse;
 
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +19,14 @@ import java.util.List;
 public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.RecyclerViewAdapter> {
 
     private OnClickListener mOnClickListener;
+    private Context context;
 
     List<Item> mItemList;
 
-    public ItemRecyclerAdapter(List<Item> itemList, OnClickListener onClickListener){
+    public ItemRecyclerAdapter(List<Item> itemList, OnClickListener onClickListener, Context context){
         this.mItemList = itemList;
         this.mOnClickListener = onClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -38,7 +43,14 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());
         recyclerViewAdapter.mTextViewPlayers.setText(item.getMinPlayers()+"-"+item.getMaxPlayers());
-        recyclerViewAdapter.mImageView.setImageResource(R.drawable.arduino_with_sensor);
+        String title = item.getTitle();
+        title = title.replaceAll(" ", "_");
+        title = title.replaceAll("'", "");
+        title = title.toLowerCase();
+        Resources res = context.getResources();
+        String mDrawableName = title;
+        int resID = res.getIdentifier(mDrawableName , "drawable", context.getPackageName());
+        recyclerViewAdapter.mImageView.setImageResource(resID);
 
     }
 
