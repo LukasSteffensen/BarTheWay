@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -26,7 +27,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +48,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
     private UUID mDeviceUUID;
     private BluetoothSocket mBTSocket;
     private ReadInput mReadThread = null;
+    SearchView mSearchView;
 
     SwipeRefreshLayout swipeRefresh;
     BrowsePresenter presenter;
@@ -55,7 +60,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     private boolean mIsUserInitiatedDisconnect = false;
 
-    // All controls here
     private TextView mTxtReceive;
     private TextView mTxtGame;
     private RecyclerView mRecyclerView;
@@ -82,18 +86,28 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
 
+        mSearchView = findViewById(R.id.search_view_browse);
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
         presenter = new BrowsePresenter(this);
         presenter.getItemData();
 
-        Toolbar toolbar = findViewById(R.id.toolbar_top);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
         swipeRefresh.setOnRefreshListener(
                 () -> presenter.getItemData()
         );
+
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
 
 
         final Intent intent = getIntent();
@@ -161,6 +175,15 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             }
             mTxtGame.setText("");
         });
+    }
+
+    public static void hideKeyboard(Activity activity) {
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = activity.getCurrentFocus();
+        if (view == null) {
+            view = new View(activity);
+        }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     private void returnGame() {

@@ -8,25 +8,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.RecyclerViewAdapter> {
+public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapter.RecyclerViewAdapter> implements Filterable {
 
     private OnClickListener mOnClickListener;
     private Context context;
 
     List<Item> mItemList;
+    List<Item> mItemListFilter;
 
     public ItemRecyclerAdapter(List<Item> itemList, OnClickListener onClickListener, Context context){
         this.mItemList = itemList;
         this.mOnClickListener = onClickListener;
         this.context = context;
+        this.mItemListFilter = new ArrayList<>(itemList);
     }
 
     @NonNull
@@ -63,6 +68,39 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         return mItemList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+        return filterList;
+    }
+
+    private Filter filterList = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Item> filteredList = new ArrayList<>();
+
+            if(constraint== null || constraint.length() == 0){
+                filteredList.addAll(mItemListFilter);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Item item : mItemListFilter){
+                    if(item.getTitle().toLowerCase().startsWith(filterPattern)){
+                        filteredList.add(item);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mItemList.clear();
+            mItemList.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
+
     class RecyclerViewAdapter extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTextViewTitle, mTextViewLanguage, mTextViewPlayers;
@@ -90,6 +128,12 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     public interface OnClickListener{
         void onItemClick(int position);
+    }
+
+    public void updateList(ArrayList<Item> items){
+        mItemList = new ArrayList<>();
+        mItemList.addAll(items);
+        notifyDataSetChanged();
     }
 
 }

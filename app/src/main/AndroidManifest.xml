@@ -27,7 +27,7 @@
         <activity android:name=".AddItemActivity" />
         <activity android:name=".Browse.TestActivity" />
         <activity android:name=".Browse.BrowseActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".Browse.CurrentBorrowersActivity" />
         <activity android:name=".Browse.PreviousBorrowersActivity" />
         <activity android:name=".Browse.BluetoothActivity" />
