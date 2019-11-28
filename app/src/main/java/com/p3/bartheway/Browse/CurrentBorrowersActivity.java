@@ -80,6 +80,16 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
     @Override
     public void onGetStudent(List<Student> students) {
         studentList = students;
+        Student temp;
+        for (int i = 0; i < loanList.size(); i++) {
+            for (int j = 0; j < students.size(); j++) {
+                if (loanList.get(i).getTitle().equals(students.get(j).getTitle())) {
+                    temp = studentList.get(i);
+                    studentList.set(i, students.get(j));
+                    studentList.set(j, temp);
+                }
+            }
+        }
         mAdapter = new LoanRecyclerAdapter(loanList, studentList, this);
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();

@@ -3,6 +3,7 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -51,7 +52,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     List<Student> student;
 
-    Date date = new Date();
 
     private boolean mIsUserInitiatedDisconnect = false;
 
@@ -134,10 +134,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
 
         mBtnConfirm.setOnClickListener(v -> {
+            Date date = new Date();
+
             String title = mTxtGame.getText().toString().trim();
             title = title.replaceAll("'", "''");
             int card_uid = student.get(0).getCard_uid();
             String timestampBorrow = new Timestamp(date.getTime()).toString();
+            timestampBorrow = removeLastFourChars(timestampBorrow);
             byte returned = 0;
             presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
             student = null;
@@ -162,10 +165,13 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         builder.setMessage("Is " + student.get(0).getStudentName() + " returning " + student.get(0).getTitle() + "?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
+                    Date date = new Date();
+
                     int card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
                     title = title.replaceAll("'", "''");
                     String timestampReturn = new Timestamp(date.getTime()).toString();
+                    timestampReturn = removeLastFourChars(timestampReturn);
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
                     student=null;
@@ -461,5 +467,10 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             }
             progressDialog.dismiss();
         }
+    }
+    public String removeLastFourChars(String s) {
+            return (s == null || s.length() == 3)
+                    ? null
+                    : (s.substring(0, s.length() - 4));
     }
 }

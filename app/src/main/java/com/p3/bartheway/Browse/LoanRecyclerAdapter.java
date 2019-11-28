@@ -40,7 +40,7 @@ public class LoanRecyclerAdapter extends RecyclerView.Adapter<LoanRecyclerAdapte
 
         recyclerViewAdapter.mTextViewStudentName.setText(student.getStudentName());
         recyclerViewAdapter.mTextViewTitle.setText(loan.getTitle());
-        recyclerViewAdapter.mTextViewTimestamp.setText(loan.getTimestampBorrow().toString());
+        recyclerViewAdapter.mTextViewTimestamp.setText(loan.getTimestampBorrow());
 
     }
 

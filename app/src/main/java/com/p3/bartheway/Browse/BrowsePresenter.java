@@ -64,7 +64,7 @@ public class BrowsePresenter {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
-                    Log.i("getStudentData", "Success");
+                    Log.i("getStudentDataSuccess", response.body().toString());
                 }
             }
 
@@ -72,7 +72,7 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
-                Log.i("getStudentData", "Fail");
+                Log.i("getStudentDataFail", t.toString());
             }
         });
     }
@@ -86,13 +86,13 @@ public class BrowsePresenter {
             public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
-                    Log.i("getCurrentBorrowers", "success");
+                    Log.i("CurrentBorrowersSuccess", response.body().toString());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
-                Log.i("getCurrentBorrowers", "Fail");
+                Log.i("CurrentBorrowersFail", t.toString());
             }
         });
     }
@@ -268,6 +268,32 @@ public class BrowsePresenter {
 
             }
         });
+        Call<Item> callReturnItem=  apiInterface.updateItem(title, card_uid);
+
+        callReturnItem.enqueue(new Callback<Item>() {
+            @Override
+            public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
+
+                Log.i("onResponse", "try return item");
+                if (response.isSuccessful() && response.body()!= null) {
+                    Boolean success = response.body().getSuccess();
+                    if (success) {
+                        Log.i("onResponse", "success return item");
+                        //   Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i("onResponse", "return item " + response.body().getMessage());
+                        Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
+                Log.i("onFailure", "return loan" + t.getLocalizedMessage());
+                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+
+            }
+        });
         Call<Student> callStudent =  apiInterface.updateStudent("", card_uid);
 
         callStudent.enqueue(new Callback<Student>() {
@@ -294,6 +320,9 @@ public class BrowsePresenter {
 
             }
         });
+        // Fix here later with Toasts
+        // To Jonas from Jonas
+
     }
     void deleteItem(String title) {
         // put call to the ApiInterface method also called deleteItem()
