@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#ED1C24</color>
+    <color name="colorPrimaryDark">#C5101A</color>
+    <color name="colorAccent">#09AF00</color>
     <color name="colorCardView">#5A5A5A</color>
+    <color name="colorLightGrey">#F3F3F3</color>
+    <color name="colorNotAsLightGrey">#D3D3D3</color>
 </resources>

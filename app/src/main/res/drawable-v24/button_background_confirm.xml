@@ -3,7 +3,7 @@
     android:shape="rectangle">
 
     <solid
-        android:color="@color/colorCardView"
+        android:color="@color/colorPrimaryDark"
         android:width="4dp"/>
 
     <corners

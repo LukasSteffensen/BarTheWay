@@ -3,7 +3,19 @@
     android:shape="rectangle">
 
     <stroke
-        android:color="@color/colorPrimaryDark"
+        android:color="@color/colorAccent"
         android:width="2dp">
     </stroke>
+
+    <solid
+        android:color="@color/cardview_light_background">
+
+    </solid>
+
+    <corners
+        android:bottomLeftRadius="8dip"
+        android:topRightRadius="8dip"
+        android:topLeftRadius="8dip"
+        android:bottomRightRadius="8dip"
+        />
 </shape>
