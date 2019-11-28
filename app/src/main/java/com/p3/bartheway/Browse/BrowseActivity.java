@@ -115,14 +115,17 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             public void run() {
                 if (student != null && !isAlertShowing) {
                     if (student.get(0).getTitle() != null && !student.get(0).getTitle().equals("")) {
-                        mBtnConfirm.setVisibility(View.INVISIBLE);
+                        mBtnConfirm.setAlpha(.3f);
+                        mBtnConfirm.setClickable(false);
                         returnGame();
                     }
                 }
                 if (!mTxtGame.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("") && !mTxtReceive.getText().toString().trim().equals("Not connected to Arduino")) {
-                    mBtnConfirm.setVisibility(View.VISIBLE);
+                    mBtnConfirm.setAlpha(1);
+                    mBtnConfirm.setClickable(true);
                 } else {
-                    mBtnConfirm.setVisibility(View.INVISIBLE);
+                    mBtnConfirm.setAlpha(.3f);
+                    mBtnConfirm.setClickable(false);
                 }
 
                 handler.postDelayed(this, 500);

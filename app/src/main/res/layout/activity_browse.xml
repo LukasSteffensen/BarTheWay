@@ -58,6 +58,7 @@
         android:layout_below="@id/txtGame"
         android:background="@drawable/button_background_confirm"
         android:text="Confirm"
+        android:minWidth="110dp"
         android:textColor="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
