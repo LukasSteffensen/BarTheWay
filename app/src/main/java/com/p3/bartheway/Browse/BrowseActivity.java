@@ -180,6 +180,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                     mTxtReceive.setText("");
                 }).setNegativeButton("No", ((dialog, which) -> {
                     student=null;
+
                     isAlertShowing = false;
                     dialog.cancel();
         }));
