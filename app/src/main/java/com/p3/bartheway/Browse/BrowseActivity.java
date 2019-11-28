@@ -20,7 +20,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -135,7 +134,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             String title = mTxtGame.getText().toString().trim();
             title = title.replaceAll("'", "''");
             int card_uid = student.get(0).getCard_uid();
-            Timestamp timestampBorrow = new Timestamp(date.getTime());
+            String timestampBorrow = new Timestamp(date.getTime()).toString();
             byte returned = 0;
             presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
             student = null;
@@ -163,7 +162,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                     int card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
                     title = title.replaceAll("'", "''");
-                    Timestamp timestampReturn = new Timestamp(date.getTime());
+                    String timestampReturn = new Timestamp(date.getTime()).toString();
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
                     student=null;
@@ -207,6 +206,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 startActivity(intentCurrentBorrowers);
                 return true;
             case R.id.previous_borrowers:
+                startActivity(new Intent(getApplicationContext(), PreviousBorrowersActivity.class));
+                return true;
             case R.id.account_settings:
             case R.id.delete_game:
                 Intent intentDeleteItem = new Intent(getApplicationContext(), DeleteItemActivity.class);

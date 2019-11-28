@@ -28,6 +28,7 @@
         <activity android:name=".Browse.TestActivity" />
         <activity android:name=".Browse.BrowseActivity" />
         <activity android:name=".Browse.CurrentBorrowersActivity" />
+        <activity android:name=".Browse.PreviousBorrowersActivity" />
         <activity android:name=".Browse.BluetoothActivity" />
     </application>
 

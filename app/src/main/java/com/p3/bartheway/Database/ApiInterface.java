@@ -29,7 +29,7 @@ public interface ApiInterface {
     Call<Loan> saveLoan(
             @Field("card_uid") int card_uid,
             @Field("title") String title,
-            @Field("timestampBorrow") Timestamp timestampBorrow,
+            @Field("timestampBorrow") String timestampBorrow,
             @Field("returned") byte returned
     );
 
@@ -37,7 +37,7 @@ public interface ApiInterface {
     @POST("returnLoan.php")
     Call<Loan> returnLoan(
             @Field("card_uid") int card_uid,
-            @Field("timestampReturn") Timestamp timestampReturn,
+            @Field("timestampReturn") String timestampReturn,
             @Field("returned") byte returned
     );
 
@@ -55,7 +55,7 @@ public interface ApiInterface {
             @Field("card_uid") int card_uid
     );
 
-    @GET("items.php")
+    @GET("getItems.php")
     Call<List<Item>> getItems();
 
     @GET("student.php")
@@ -64,9 +64,8 @@ public interface ApiInterface {
     @GET("currentBorrowers.php")
     Call<List<Student>> getBorrowers();
 
-    @GET("currentLoans.php")
-    Call<List<Loan>> getLoans();
-
+    @GET("getLoans.php")
+    Call<List<Loan>> getLoans(@Query("returned") byte returned);
 
     @FormUrlEncoded
     @POST("deleteItem.php")

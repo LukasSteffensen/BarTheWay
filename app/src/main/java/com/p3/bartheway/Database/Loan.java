@@ -12,9 +12,9 @@ public class Loan {
     @Expose
     @SerializedName("card_uid") private int card_uid;
     @Expose
-    @SerializedName("timestampBorrow") private Timestamp timestampBorrow;
+    @SerializedName("timestampBorrow") private String timestampBorrow;
     @Expose
-    @SerializedName("timestampReturn") private Timestamp timestampReturn;
+    @SerializedName("timestampReturn") private String timestampReturn;
     @Expose
     @SerializedName("returned") private byte returned;
     @Expose
@@ -38,19 +38,19 @@ public class Loan {
         this.card_uid = card_uid;
     }
 
-    public Timestamp getTimestampBorrow() {
+    public String getTimestampBorrow() {
         return timestampBorrow;
     }
 
-    public void setTimestampBorrow(Timestamp timestampBorrow) {
+    public void setTimestampBorrow(String timestampBorrow) {
         this.timestampBorrow = timestampBorrow;
     }
 
-    public Timestamp getTimestampReturn() {
+    public String getTimestampReturn() {
         return timestampReturn;
     }
 
-    public void setTimestampReturn(Timestamp timestampReturn) {
+    public void setTimestampReturn(String timestampReturn) {
         this.timestampReturn = timestampReturn;
     }
 

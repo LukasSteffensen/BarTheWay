@@ -11,9 +11,10 @@ import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CurrentBorrowersActivity extends AppCompatActivity implements LoanRecyclerAdapter.OnClickListener, BrowseView{
+public class PreviousBorrowersActivity extends AppCompatActivity implements LoanRecyclerAdapter.OnClickListener, BrowseView{
 
     private TextView textViewCurrentBorrowers;
     private RecyclerView mRecyclerView;
@@ -22,7 +23,7 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
 
     List<Loan> loanList;
     List<Student> studentList;
-    byte returned = 0;
+    byte returned = 1;
 
     boolean hasLoans, hasStudents = false;
 
@@ -63,7 +64,20 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
     @Override
     public void onGetLoans(List<Loan> loans) {
         loanList = loans;
-        presenter.getCurrentBorrowers();
+        ArrayList<Integer> cardUIDList = new ArrayList<>();
+        for (Loan l : loanList) {
+            if (!cardUIDList.contains(l.getCard_uid())) {
+                cardUIDList.add(l.getCard_uid());
+            }
+        }
+        for (int i : cardUIDList) {
+            presenter.getStudentData(i);
+        }
+
+        mAdapter = new LoanRecyclerAdapter(loanList, studentList, this);
+        mRecyclerView.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -79,9 +93,6 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
 
     @Override
     public void onGetStudent(List<Student> students) {
-        studentList = students;
-        mAdapter = new LoanRecyclerAdapter(loanList, studentList, this);
-        mRecyclerView.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+        studentList.add(students.get(0));
     }
 }

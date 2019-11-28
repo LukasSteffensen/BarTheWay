@@ -64,7 +64,7 @@ public class BrowsePresenter {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
-                    Log.i("onResponse", response.body().toString());
+                    Log.i("getStudentData", "Success");
                 }
             }
 
@@ -72,7 +72,7 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
                 view.hideLoading();
                 view.onErrorLoading(t.getLocalizedMessage());
-                Log.i("onFailure", "Fail");
+                Log.i("getStudentData", "Fail");
             }
         });
     }
@@ -96,21 +96,21 @@ public class BrowsePresenter {
             }
         });
     }
-    void getCurrentLoans() {
-        Call<List<Loan>> callLoans = apiInterface.getLoans();
+    void getLoans(byte returned) {
+        Call<List<Loan>> callLoans = apiInterface.getLoans(returned);
         callLoans.enqueue(new Callback<List<Loan>>() {
             @Override
             public void onResponse(@NonNull Call<List<Loan>> call, @NonNull Response<List<Loan>> response) {
                 view.hideLoading();
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetLoans(response.body());
-                    Log.i("getCurrentLoans", "success");
+                    Log.i("getLoansSuccess", response.body().toString());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Loan>> call, @NonNull Throwable t) {
-                Log.i("getCurrentLoans", "Fail");
+                Log.i("getLoansFailure", t.toString());
             }
         });
     }
@@ -122,9 +122,10 @@ public class BrowsePresenter {
      * @param timestampBorrow
      * @param returned
      */
-    public void saveLoan(Context context, final int card_uid,
+    public void saveLoan(Context context,
+                          final int card_uid,
                           final String title,
-                          final Timestamp timestampBorrow,
+                          final String timestampBorrow,
                           final byte returned) {
 
 
@@ -236,7 +237,7 @@ public class BrowsePresenter {
      */
     void returnItem(Context context, final int card_uid,
                             final String title,
-                            final Timestamp timestampReturn,
+                            final String timestampReturn,
                             final byte returned) {
 
 
