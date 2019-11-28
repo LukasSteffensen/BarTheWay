@@ -152,6 +152,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             if(b.get("Connect").equals("true")) {
                 mTxtReceive.setText("");
             }
+            mTxtGame.setText("");
         });
     }
 
