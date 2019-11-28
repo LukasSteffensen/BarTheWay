@@ -21,11 +21,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,6 +86,10 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
         presenter = new BrowsePresenter(this);
         presenter.getItemData();
+
+        Toolbar toolbar = findViewById(R.id.toolbar_top);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
         swipeRefresh.setOnRefreshListener(
                 () -> presenter.getItemData()
