@@ -373,7 +373,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
      * @param s
      */
     private void msg(String s) {
-        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), s, Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -448,7 +448,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             super.onPostExecute(result);
 
             if (!mConnectSuccessful) {
-                Toast.makeText(getApplicationContext(), "Could not connect to device. Is it a Serial device? Also check if the UUID is correct in the settings", Toast.LENGTH_LONG).show();
+                msg("Could not connect to device. Is the device powered and within range?");
                 finish();
             } else {
                 //successful connection so an instance of ReadInput is created and executed
