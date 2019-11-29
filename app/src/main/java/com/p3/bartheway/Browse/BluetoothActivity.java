@@ -84,12 +84,12 @@ public class BluetoothActivity extends AppCompatActivity {
             }
         });
 
-        //If a device has been selected, the BrowseActivity will open with a bunch of extras from this activity
+        //If a device has been selected, the BartenderBrowseActivity will open with a bunch of extras from this activity
         connect.setOnClickListener(arg0 -> {
             if (((BluetoothDeviceAdapter) (listView.getAdapter())).isSelected()) {
                 BluetoothDevice device = ((BluetoothDeviceAdapter) (listView.getAdapter())).getSelectedItem();
 
-                Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), BartenderBrowseActivity.class);
                 intent.putExtra(DEVICE_EXTRA, device);
                 intent.putExtra(DEVICE_UUID, mDeviceUUID.toString());
                 intent.putExtra(BUFFER_SIZE, mBufferSize);

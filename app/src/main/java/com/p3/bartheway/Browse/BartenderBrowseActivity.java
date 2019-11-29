@@ -3,17 +3,14 @@ package com.p3.bartheway.Browse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,14 +20,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -43,7 +36,7 @@ import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.Login.LoginActivity;
 import com.p3.bartheway.R;
 
-public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
+public class BartenderBrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
     private static final String TAG = "BluetoothActivity";
     private int mMaxChars = 50000;//Default
@@ -245,7 +238,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                 startActivity(intentDeleteItem);
                 return true;
             case R.id.add_game:
-                Log.i("case ", "add item");
                 Intent intentAddItem = new Intent(getApplicationContext(), AddItemActivity.class);
                 startActivity(intentAddItem);
                 return true;
@@ -259,7 +251,11 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
     @Override
     public void onItemClick(int position) {
-        mTxtGame.setText(items.get(position).getTitle());
+        if (items.get(position).getCardUid() > 0) {
+            msg("This game is already borrowed");
+        } else {
+            mTxtGame.setText(items.get(position).getTitle());
+        }
     }
 
     @Override
@@ -346,10 +342,8 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
                     Thread.sleep(500);
                 }
             } catch (IOException e) {
-// TODO Auto-generated catch block
                 e.printStackTrace();
             } catch (InterruptedException e) {
-// TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -382,7 +376,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             try {
                 mBTSocket.close();
             } catch (IOException e) {
-// TODO Auto-generated catch block
                 e.printStackTrace();
             }
             return null;
@@ -439,12 +432,6 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
         super.onStop();
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-// TODO Auto-generated method stub
-        super.onSaveInstanceState(outState);
-    }
-
     /**
      * Connects to that arduino and starts running the ReadInput Thread
      */
@@ -453,7 +440,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
 
         @Override
         protected void onPreExecute() {
-                progressDialog = ProgressDialog.show(BrowseActivity.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
+                progressDialog = ProgressDialog.show(BartenderBrowseActivity.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
         }
 
         @Override
@@ -490,7 +477,7 @@ public class BrowseActivity extends AppCompatActivity implements ItemRecyclerAda
             progressDialog.dismiss();
         }
     }
-    public String removeLastFourChars(String s) {
+    public static String removeLastFourChars(String s) {
             return (s == null || s.length() == 3)
                     ? null
                     : (s.substring(0, s.length() - 4));

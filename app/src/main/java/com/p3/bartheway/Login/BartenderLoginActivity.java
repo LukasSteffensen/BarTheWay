@@ -3,15 +3,13 @@ package com.p3.bartheway.Login;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.EditText;
 
-import com.p3.bartheway.Browse.BrowseActivity;
+import com.p3.bartheway.Browse.BartenderBrowseActivity;
 import com.p3.bartheway.R;
 
 import static android.view.KeyEvent.KEYCODE_ENTER;
-import static android.view.KeyEvent.KEYCODE_NUMPAD_ENTER;
 
 public class BartenderLoginActivity extends AppCompatActivity {
 
@@ -25,7 +23,7 @@ public class BartenderLoginActivity extends AppCompatActivity {
                 if (!editTextPassword.getText().toString().equals("")) {
                     int password = 9999;
                     if (Integer.parseInt(editTextPassword.getText().toString()) == (password)){
-                        Intent intent = new Intent(getApplicationContext(), BrowseActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), BartenderBrowseActivity.class);
                         intent.putExtra("Connect", "false");
                         startActivity(intent);
                     } else {

@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Browse.DeleteItemActivity"></activity>
+        <activity android:name=".Browse.StudentBrowseActivity"></activity>
+        <activity android:name=".Browse.DeleteItemActivity" />
         <activity android:name=".Login.BartenderLoginActivity" />
         <activity android:name=".Login.LoginActivity">
             <intent-filter>
@@ -26,8 +27,9 @@
         </activity>
         <activity android:name=".AddItemActivity" />
         <activity android:name=".Browse.TestActivity" />
-        <activity android:name=".Browse.BrowseActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+        <activity
+            android:name=".Browse.BartenderBrowseActivity"
+            android:windowSoftInputMode="adjustNothing" />
         <activity android:name=".Browse.CurrentBorrowersActivity" />
         <activity android:name=".Browse.PreviousBorrowersActivity" />
         <activity android:name=".Browse.BluetoothActivity" />

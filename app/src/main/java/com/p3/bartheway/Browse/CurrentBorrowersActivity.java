@@ -1,6 +1,7 @@
 package com.p3.bartheway.Browse;
 
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,8 @@ import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class CurrentBorrowersActivity extends AppCompatActivity implements LoanRecyclerAdapter.OnClickListener, BrowseView{
@@ -47,6 +50,31 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
 
     @Override
     public void onItemClick(int position) {
+
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+
+        builder.setMessage("Is " + studentList.get(position).getStudentName() + " returning " + studentList.get(position).getTitle() + "?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Date date = new Date();
+
+                    int card_uid = studentList.get(position).getCard_uid();
+                    String title = loanList.get(position).getTitle();
+                    title = title.replaceAll("'", "''");
+                    String timestampReturn = new Timestamp(date.getTime()).toString();
+                    timestampReturn = BartenderBrowseActivity.removeLastFourChars(timestampReturn);
+                    byte returned = 1;
+                    presenter.returnItem(this, card_uid, title, timestampReturn, returned);
+                    loanList.remove(position);
+                    studentList.remove(position);
+                    mAdapter.notifyDataSetChanged();
+                }).setNegativeButton("No", ((dialog, which) -> {
+                    dialog.cancel();
+        }));
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
 
     }
 

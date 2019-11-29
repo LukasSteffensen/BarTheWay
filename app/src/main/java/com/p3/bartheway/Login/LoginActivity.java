@@ -3,11 +3,9 @@ package com.p3.bartheway.Login;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 
-import com.p3.bartheway.AddItemActivity;
-import com.p3.bartheway.Browse.BrowseActivity;
+import com.p3.bartheway.Browse.StudentBrowseActivity;
 import com.p3.bartheway.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -30,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         btnStudent.setOnClickListener(v -> {
+            startActivity(new Intent(getApplicationContext(), StudentBrowseActivity.class));
         });
     }
 }

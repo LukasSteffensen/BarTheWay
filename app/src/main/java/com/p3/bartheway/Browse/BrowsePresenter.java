@@ -235,10 +235,11 @@ public class BrowsePresenter {
      * @param timestampReturn
      * @param returned
      */
-    void returnItem(Context context, final int card_uid,
-                            final String title,
-                            final String timestampReturn,
-                            final byte returned) {
+    void returnItem(Context context,
+                    final int card_uid,
+                    final String title,
+                    final String timestampReturn,
+                    final byte returned) {
 
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
@@ -268,7 +269,7 @@ public class BrowsePresenter {
 
             }
         });
-        Call<Item> callReturnItem=  apiInterface.updateItem(title, card_uid);
+        Call<Item> callReturnItem=  apiInterface.updateItem(title, -1);
 
         callReturnItem.enqueue(new Callback<Item>() {
             @Override

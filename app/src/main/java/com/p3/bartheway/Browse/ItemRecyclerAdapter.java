@@ -23,6 +23,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     private OnClickListener mOnClickListener;
     private Context context;
+    private boolean isAvailable;
 
     List<Item> mItemList;
     List<Item> mItemListFilter;
@@ -44,6 +45,10 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter recyclerViewAdapter, int i) {
         Item item = mItemList.get(i);
+
+        if (item.getCardUid() < 0) {
+            isAvailable = false;
+        }
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());

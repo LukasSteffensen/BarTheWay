@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Browse.BrowseActivity">
+    tools:context=".Browse.BartenderBrowseActivity">
 
     <SearchView
         android:id="@+id/search_view_browse"
