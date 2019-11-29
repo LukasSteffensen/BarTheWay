@@ -7,12 +7,12 @@
     android:orientation="vertical"
     tools:context=".Browse.BrowseActivity">
 
-    <android.support.v7.widget.SearchView
+    <SearchView
         android:id="@+id/search_view_browse"
+        android:iconifiedByDefault="false"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        app:iconifiedByDefault="false"
         android:background="@drawable/search_view_background"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
