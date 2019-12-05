@@ -1,12 +1,14 @@
 package com.p3.bartheway.Browse;
 
 import android.app.Dialog;
+import android.content.res.Resources;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +30,13 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
     List<Item> items;
 
     SearchView mSearchView;
-
+    TextView textViewTitle;
+    TextView textViewDuration;
+    TextView textViewPlayers;
+    TextView textViewYear;
+    TextView textViewLanguage;
+    TextView textViewDescription;
+    ImageView imageView;
     private RecyclerView mRecyclerView;
     private ItemRecyclerAdapter mAdapter;
 
@@ -40,6 +48,15 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
         setContentView(R.layout.activity_student_browse);
 
         itemDialog = new Dialog(this);
+
+        itemDialog.setContentView(R.layout.pop_up_item);
+        textViewTitle = itemDialog.findViewById(R.id.textViewPopUpTitle);
+        textViewDuration = itemDialog.findViewById(R.id.textViewPopUpDuration);
+        textViewPlayers = itemDialog.findViewById(R.id.textViewPopUpPlayers);
+        textViewYear = itemDialog.findViewById(R.id.textViewPopUpYear);
+        textViewLanguage = itemDialog.findViewById(R.id.textViewPopUpLanguage);
+        textViewDescription = itemDialog.findViewById(R.id.textViewPopUpDescription);
+        imageView = itemDialog.findViewById(R.id.imageViewItem);
 
         mRecyclerView = findViewById(R.id.item_recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
@@ -76,19 +93,15 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
                           String year,
                           String language,
                           String description) {
-        TextView textViewTitle;
-        TextView textViewDuration;
-        TextView textViewPlayers;
-        TextView textViewYear;
-        TextView textViewLanguage;
-        TextView textViewDescription;
-        itemDialog.setContentView(R.layout.pop_up_item);
-        textViewTitle = itemDialog.findViewById(R.id.textViewPopUpTitle);
-        textViewDuration = itemDialog.findViewById(R.id.textViewPopUpDuration);
-        textViewPlayers = itemDialog.findViewById(R.id.textViewPopUpPlayers);
-        textViewYear = itemDialog.findViewById(R.id.textViewPopUpYear);
-        textViewLanguage = itemDialog.findViewById(R.id.textViewPopUpLanguage);
-        textViewDescription = itemDialog.findViewById(R.id.textViewPopUpDescription);
+
+        String titleForImage = title;
+        titleForImage = titleForImage.replaceAll(" ", "_");
+        titleForImage = titleForImage.replaceAll("'", "");
+        titleForImage = titleForImage.toLowerCase();
+        Resources res = getApplicationContext().getResources();
+        String mDrawableName = titleForImage;
+        int resID = res.getIdentifier(mDrawableName , "drawable", getApplicationContext().getPackageName());
+        imageView.setImageResource(resID);
         textViewTitle.setText("Title: " + title);
         textViewDuration.setText("Duration: " + duration);
         textViewPlayers.setText("Players: " + players);

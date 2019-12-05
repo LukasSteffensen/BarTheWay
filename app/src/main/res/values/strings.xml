@@ -16,4 +16,5 @@
     <string name="menu_add">Add game</string>
     <string name="menu_logout">Logout</string>
     <string name="toolbar_title_browse">BarTheWay</string>
+    <string name="password">Password</string>
 </resources>
