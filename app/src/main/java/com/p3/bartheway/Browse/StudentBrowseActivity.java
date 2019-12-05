@@ -3,10 +3,12 @@ package com.p3.bartheway.Browse;
 import android.app.Dialog;
 import android.content.res.Resources;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -63,6 +65,9 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
         mRecyclerView.setHasFixedSize(true);
         mSearchView = findViewById(R.id.search_view_browse);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         swipeRefresh = findViewById(R.id.swipeRefresh);
 
         presenter = new BrowsePresenter(this);
@@ -87,6 +92,16 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public void showPopUp(String title,
                           String duration,
                           String players,
@@ -103,7 +118,7 @@ public class StudentBrowseActivity extends AppCompatActivity implements ItemRecy
         int resID = res.getIdentifier(mDrawableName , "drawable", getApplicationContext().getPackageName());
         imageView.setImageResource(resID);
         textViewTitle.setText("Title: " + title);
-        textViewDuration.setText("Duration: " + duration);
+        textViewDuration.setText("Playing time: " + duration);
         textViewPlayers.setText("Players: " + players);
         textViewYear.setText("Year: " + year);
         textViewLanguage.setText("Language: " + language);

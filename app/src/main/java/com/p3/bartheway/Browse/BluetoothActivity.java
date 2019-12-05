@@ -43,6 +43,8 @@ public class BluetoothActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bluetooth);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         search = (Button) findViewById(R.id.button_search);
         connect = (Button) findViewById(R.id.button_connect);
 
@@ -97,6 +99,12 @@ public class BluetoothActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override

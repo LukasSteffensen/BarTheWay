@@ -31,4 +31,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), StudentBrowseActivity.class));
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        // this will always exit the app
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
+    }
 }

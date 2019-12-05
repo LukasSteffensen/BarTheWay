@@ -44,6 +44,14 @@ public class DeleteItemActivity extends AppCompatActivity implements ItemRecycle
                 () -> presenter.getItemData()
         );
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override

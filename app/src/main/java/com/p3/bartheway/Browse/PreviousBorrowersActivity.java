@@ -10,7 +10,6 @@ import com.p3.bartheway.R;
 public class PreviousBorrowersActivity extends AppCompatActivity implements PreviousLoansFragment.OnFragmentInteractionListener, PreviousBorrowersFragment.OnFragmentInteractionListener {
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,6 +18,7 @@ public class PreviousBorrowersActivity extends AppCompatActivity implements Prev
         getSupportFragmentManager().beginTransaction()
                 .add(android.R.id.content, new PreviousBorrowersFragment()).commit();
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -39,5 +39,11 @@ public class PreviousBorrowersActivity extends AppCompatActivity implements Prev
             getSupportFragmentManager().popBackStack();
         }
 
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

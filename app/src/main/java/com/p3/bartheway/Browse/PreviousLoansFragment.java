@@ -84,7 +84,6 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
             title = getArguments().getStringArrayList(ARG_TITLE);
             timestampBorrow = getArguments().getStringArrayList(ARG_TIMESTAMP_BORROW);
             timestampReturn = getArguments().getStringArrayList(ARG_TIMESTAMP_RETURN);
-
             for (int i = 0; i < timestampBorrow.size(); i++) {
                 Loan loan = new Loan();
                 loan.setTitle(title.get(i));
@@ -146,7 +145,6 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
     public void onItemClick(int position) {
 
     }
-
 
 
     /**
