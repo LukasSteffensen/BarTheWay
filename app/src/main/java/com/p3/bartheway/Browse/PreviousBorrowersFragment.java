@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,7 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
     List<Item> itemList;
     List<Loan> loanList;
 
-    ArrayList<String> studentNames = new ArrayList<>();
-    ArrayList<String> title = new ArrayList<>();
-    ArrayList<String> timestampBorrow = new ArrayList<>();
-    ArrayList<String> timestampReturn = new ArrayList<>();
+
 
     SearchView mSearchView;
 
@@ -54,6 +52,13 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
     private ItemRecyclerAdapter itemRecyclerAdapter;
 
     private OnFragmentInteractionListener mListener;
+
+
+    ArrayList<String> studentNames = new ArrayList<>();
+    ArrayList<String> title = new ArrayList<>();
+    ArrayList<String> timestampBorrow = new ArrayList<>();
+    ArrayList<String> timestampReturn = new ArrayList<>();
+
 
     public PreviousBorrowersFragment() {
         // Required empty public constructor
@@ -172,6 +177,10 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
     @Override
     public void onGetLoans(List<Loan> loans) {
         this.loanList = loans;
+        studentNames = new ArrayList<>();
+        title = new ArrayList<>();
+        timestampBorrow = new ArrayList<>();
+        timestampReturn = new ArrayList<>();
         for (Loan l : loanList) {
             presenter.getStudentData(l.getCard_uid());
             title.add(l.getTitle());
@@ -184,11 +193,13 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
     public void onGetStudent(List<Student> student) {
         studentNames.add(student.get(0).getStudentName());
         if (studentNames.size() == loanList.size()) {
+            Log.i("Hello", "What");
             Bundle bundle = new Bundle();
             bundle.putStringArrayList("studentNames", studentNames);
             bundle.putStringArrayList("title", title);
             bundle.putStringArrayList("timestampBorrow", timestampBorrow);
             bundle.putStringArrayList("timestampReturn", timestampReturn);
+            loanList = new ArrayList<>();
             Fragment fragment = new PreviousLoansFragment();
             fragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction()
@@ -218,4 +229,5 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
