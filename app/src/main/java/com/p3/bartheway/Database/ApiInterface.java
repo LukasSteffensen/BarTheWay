@@ -1,6 +1,5 @@
 package com.p3.bartheway.Database;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,7 +57,7 @@ public interface ApiInterface {
     @GET("getItems.php")
     Call<List<Item>> getItems();
 
-    @GET("student.php")
+    @GET("getStudent.php")
     Call<List<Student>> getStudent(@Query("card_uid") int card_uid);
 
     @GET("currentBorrowers.php")
@@ -66,6 +65,9 @@ public interface ApiInterface {
 
     @GET("getLoans.php")
     Call<List<Loan>> getLoans(@Query("returned") byte returned);
+
+    @GET("getPreviousLoans.php")
+    Call<List<Loan>> getPreviousLoans(@Query("title") String title);
 
     @FormUrlEncoded
     @POST("deleteItem.php")

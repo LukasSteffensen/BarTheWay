@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Browse.StudentBrowseActivity"></activity>
+        <activity android:name=".Browse.StudentBrowseActivity" />
         <activity android:name=".Browse.DeleteItemActivity" />
         <activity android:name=".Login.BartenderLoginActivity" />
         <activity android:name=".Login.LoginActivity">

@@ -114,6 +114,32 @@ public class BrowsePresenter {
             }
         });
     }
+    void getPreviousLoans(String title) {
+        Call<List<Loan>> callLoans = apiInterface.getPreviousLoans(title);
+        callLoans.enqueue(new Callback<List<Loan>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Loan>> call, @NonNull Response<List<Loan>> response) {
+                view.hideLoading();
+                String success;
+                if (response.isSuccessful()) {
+                    success = "success";
+                } else {
+                    success = "not success";
+                }
+                if (response.isSuccessful() && response.body() != null) {
+                    view.onGetLoans(response.body());
+                    Log.i("getPreviousLoansSuccess", response.body().toString());
+                } else {
+                    Log.i("hello", success);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Loan>> call, @NonNull Throwable t) {
+                Log.i("getPreviousLoansFailure", t.toString());
+            }
+        });
+    }
     /**
      * Method that does everything in the database when a loan is made by calling the methods
      * saveLoan, updateStudentBorrow, and updateItemBorrow in ApiInterface
@@ -122,7 +148,7 @@ public class BrowsePresenter {
      * @param timestampBorrow
      * @param returned
      */
-    public void saveLoan(Context context,
+    void saveLoan(Context context,
                           final int card_uid,
                           final String title,
                           final String timestampBorrow,

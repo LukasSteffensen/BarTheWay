@@ -3,8 +3,6 @@ package com.p3.bartheway.Database;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.sql.Timestamp;
-
 public class Loan {
 
     @Expose
