@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-public class CurrentBorrowersActivity extends AppCompatActivity implements LoanRecyclerAdapter.OnClickListener, BrowseView{
+public class CurrentBorrowersActivity extends AppCompatActivity implements LoanRecyclerAdapter.OnClickListener, BrowseView {
 
     private TextView textViewCurrentBorrowers;
     private RecyclerView mRecyclerView;
@@ -27,10 +27,6 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
     List<Student> studentList;
     byte returned = 0;
 
-    boolean hasLoans, hasStudents = false;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +35,8 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
         presenter = new BrowsePresenter(this);
         presenter.getLoans(returned);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         textViewCurrentBorrowers = findViewById(R.id.textViewCurrentBorrowers);
 
         mRecyclerView = findViewById(R.id.loan_recyclerView);
@@ -46,7 +44,11 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
         mRecyclerView.setHasFixedSize(true);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
+    }
 
     @Override
     public void onItemClick(int position) {
@@ -69,11 +71,10 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
                     studentList.remove(position);
                     mAdapter.notifyDataSetChanged();
                 }).setNegativeButton("No", ((dialog, which) -> {
-                    dialog.cancel();
+            dialog.cancel();
         }));
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
 
 
     }

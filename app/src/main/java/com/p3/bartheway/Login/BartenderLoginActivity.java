@@ -49,5 +49,13 @@ public class BartenderLoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bartender_login);
 
         editTextPassword = findViewById(R.id.editTextBartenderPassword);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 }

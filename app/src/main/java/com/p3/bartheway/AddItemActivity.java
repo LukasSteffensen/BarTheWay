@@ -37,6 +37,13 @@ public class AddItemActivity extends AppCompatActivity {
         editTextDuration = findViewById(R.id.duration);
         editTextYear = findViewById(R.id.year);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return true;
     }
 
     @Override

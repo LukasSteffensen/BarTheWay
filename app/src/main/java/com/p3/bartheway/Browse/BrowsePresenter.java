@@ -138,6 +138,7 @@ public class BrowsePresenter {
             @Override
             public void onFailure(@NonNull Call<List<Loan>> call, @NonNull Throwable t) {
                 Log.i("getPreviousLoansFailure", t.toString());
+                view.onErrorLoading("");
             }
         });
     }

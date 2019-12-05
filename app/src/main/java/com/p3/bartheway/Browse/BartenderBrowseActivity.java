@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -110,7 +111,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(mAdapter!=null) {
+                if (mAdapter != null) {
                     mAdapter.getFilter().filter(newText);
                 }
                 return false;
@@ -122,7 +123,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         b = intent.getExtras();
 
         //checks if any information were given from the previous activity and either connects to the arduino or does nothing
-        if(b != null) {
+        if (b != null) {
             if (b.get("Connect").equals("true")) {
                 mDevice = b.getParcelable(BluetoothActivity.DEVICE_EXTRA);
                 mDeviceUUID = UUID.fromString(b.getString(BluetoothActivity.DEVICE_UUID));
@@ -178,11 +179,17 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
         //Clear inputs of text fields
         mBtnClearInput.setOnClickListener(arg0 -> {
-            if(b.get("Connect").equals("true")) {
+            if (b.get("Connect").equals("true")) {
                 mTxtReceive.setText("");
             }
             mTxtGame.setText("");
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        String s = "back";
+        logOutPressed(s);
     }
 
     private void returnGame() {
@@ -201,27 +208,57 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     timestampReturn = removeLastFourChars(timestampReturn);
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
-                    student=null;
+                    student = null;
                     isAlertShowing = false;
                     mTxtReceive.setText("");
                 }).setNegativeButton("No", ((dialog, which) -> {
-                    student=null;
+            student = null;
 
-                    isAlertShowing = false;
-                    dialog.cancel();
+            isAlertShowing = false;
+            dialog.cancel();
         }));
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
     //reverses the UID when called similar to how IT-service does it with their scanner
-    public static String reverse(String inputString){
+    public static String reverse(String inputString) {
         String[] words = inputString.split("\\s");
         String outputString = "";
         for (int i = words.length - 1; i >= 0; i--) {
             outputString = outputString + words[i];
         }
         return outputString;
+    }
+
+    void logOutPressed(String s) {
+        android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+
+        if (s.equals("back")) {
+            builder.setMessage("Are you sure you want quit?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        // this will always exit the app
+                        Intent a = new Intent(Intent.ACTION_MAIN);
+                        a.addCategory(Intent.CATEGORY_HOME);
+                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(a);
+                    }).setNegativeButton("No", ((dialog, which) -> {
+                dialog.cancel();
+            }));
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } else {
+            builder.setMessage("Are you sure you want to log out?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    }).setNegativeButton("No", ((dialog, which) -> {
+                dialog.cancel();
+            }));
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        }
     }
 
     @Override
@@ -233,30 +270,27 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.bluetooth:
-                Intent intentBluetooth = new Intent(getApplicationContext(), BluetoothActivity.class);
-                startActivity(intentBluetooth);
+                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
                 return true;
             case R.id.current_borrowers:
-                Intent intentCurrentBorrowers = new Intent(getApplicationContext(), CurrentBorrowersActivity.class);
-                startActivity(intentCurrentBorrowers);
+                startActivity(new Intent(getApplicationContext(), CurrentBorrowersActivity.class));
                 return true;
             case R.id.previous_borrowers:
                 startActivity(new Intent(getApplicationContext(), PreviousBorrowersActivity.class));
                 return true;
             case R.id.account_settings:
+                return true;
             case R.id.delete_game:
-                Intent intentDeleteItem = new Intent(getApplicationContext(), DeleteItemActivity.class);
-                startActivity(intentDeleteItem);
+                startActivity(new Intent(getApplicationContext(), DeleteItemActivity.class));
                 return true;
             case R.id.add_game:
-                Intent intentAddItem = new Intent(getApplicationContext(), AddItemActivity.class);
-                startActivity(intentAddItem);
+                startActivity(new Intent(getApplicationContext(), AddItemActivity.class));
                 return true;
             case R.id.logout:
-                Intent intentLogOut = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intentLogOut);
+                String s = "logout";
+                logOutPressed(s);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -265,7 +299,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     @Override
     public void onItemClick(int position) {
         if (items.get(position).getCardUid() > 0) {
-            msg("This game is already borrowed");
+            Toast.makeText(this, "This game is already borrowed", Toast.LENGTH_SHORT).show();
         } else {
             mTxtGame.setText(items.get(position).getTitle());
         }
@@ -339,6 +373,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     private class ReadInput implements Runnable {
         private boolean bStop = false;
         private Thread t;
+
         public ReadInput() {
             t = new Thread(this, "Input Thread");
             t.start();
@@ -390,8 +425,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     }
 
-    /**This calls disconnects the phone from the Arduino if the activity is set on pause to avoid crashing. AsyncTask is a form of Thread
-     that runs in the background without disrupting anything
+    /**
+     * This calls disconnects the phone from the Arduino if the activity is set on pause to avoid crashing. AsyncTask is a form of Thread
+     * that runs in the background without disrupting anything
      */
 
     private class DisConnectBT extends AsyncTask<Void, Void, Void> {
@@ -429,6 +465,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     /**
      * Used to make easier Toasts
+     *
      * @param s
      */
     private void msg(String s) {
@@ -453,7 +490,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     @Override
     protected void onResume() {
         if (mBTSocket == null || !mIsBluetoothConnected) {
-            if(!getIntent().getStringExtra("Connect").equals("false")){
+            if (!getIntent().getStringExtra("Connect").equals("false")) {
                 new ConnectBT().execute();
             }
         }
@@ -475,7 +512,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
         @Override
         protected void onPreExecute() {
-                progressDialog = ProgressDialog.show(BartenderBrowseActivity.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
+            progressDialog = ProgressDialog.show(BartenderBrowseActivity.this, "Hold on", "Connecting");// http://stackoverflow.com/a/11130220/1287554
         }
 
         @Override
@@ -512,9 +549,10 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
             progressDialog.dismiss();
         }
     }
+
     public static String removeLastFourChars(String s) {
-            return (s == null || s.length() == 3)
-                    ? null
-                    : (s.substring(0, s.length() - 4));
+        return (s == null || s.length() == 3)
+                ? null
+                : (s.substring(0, s.length() - 4));
     }
 }
