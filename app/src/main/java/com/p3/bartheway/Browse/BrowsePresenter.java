@@ -29,6 +29,7 @@ public class BrowsePresenter {
         apiInterface = ApiClient
                 .getApiClient()
                 .create(ApiInterface.class);
+
     }
 
     void getItemData() {
