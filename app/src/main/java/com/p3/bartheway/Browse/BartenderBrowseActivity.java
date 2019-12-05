@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,11 +31,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p3.bartheway.AddItemActivity;
+import com.p3.bartheway.Database.ApiClient;
+import com.p3.bartheway.Database.ApiInterface;
 import com.p3.bartheway.Database.Item;
 import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.Login.LoginActivity;
 import com.p3.bartheway.R;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class BartenderBrowseActivity extends AppCompatActivity implements ItemRecyclerAdapter.OnClickListener, BrowseView{
 
@@ -69,17 +76,21 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     private BluetoothDevice mDevice;
 
     private ProgressDialog progressDialog;
+    private ApiInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browse);
-
         mTxtReceive = findViewById(R.id.txtReceive);
         mTxtGame = findViewById(R.id.txtGame);
         mRecyclerView = findViewById(R.id.item_recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
+
+        apiInterface = ApiClient
+                .getApiClient()
+                .create(ApiInterface.class);
 
         mSearchView = findViewById(R.id.search_view_browse);
         swipeRefresh = findViewById(R.id.swipeRefresh);
@@ -295,6 +306,35 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         this.student = student;
     }
 
+    void getStudentData(int card_uid){
+
+        showLoading();
+
+        Call<List<Student>> call = apiInterface.getStudent(card_uid);
+        call.enqueue(new Callback<List<Student>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
+                hideLoading();
+                if (response.isSuccessful() && response.body() != null) {
+                    onGetStudent(response.body());
+                    Log.i("getStudentDataSuccess", response.body().toString());
+                    if (student != null) {
+                        mTxtReceive.setText(student.get(0).getStudentName());
+                    } else {
+                        Log.i("student", "is null");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<Student>> call, @NonNull Throwable t) {
+                hideLoading();
+                onErrorLoading(t.getLocalizedMessage());
+                Log.i("getStudentDataFail", t.toString());
+            }
+        });
+    }
+
     //The Thread class that runs and listens for data sent via Bluetooth
     private class ReadInput implements Runnable {
         private boolean bStop = false;
@@ -328,18 +368,11 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                         final String strInput = new String(buffer, 0, i);
                         String hex = strInput.toUpperCase();
                         hex = reverse(hex);
-                        Integer cardUID = Integer.parseInt(hex, 16);
-                        Log.i("Card UID is ", "" + cardUID);
-
-                        mTxtReceive.post(() -> {
-                            presenter.getStudentData(cardUID);
-                            if (student != null) {
-                                mTxtReceive.setText(student.get(0).getStudentName());
-                            } else{
-                                Log.i("student", "is null");
-                            }
-                        });
-
+                        if(hex.length() == 8) {
+                            Integer cardUID = Integer.parseInt(hex, 16);
+                            Log.i("Card UID is ", "" + cardUID);
+                            mTxtReceive.post(() -> getStudentData(cardUID));
+                        }
                     }
                     Thread.sleep(500);
                 }

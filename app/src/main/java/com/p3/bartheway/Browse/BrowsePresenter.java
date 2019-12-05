@@ -3,6 +3,7 @@ package com.p3.bartheway.Browse;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.p3.bartheway.Database.ApiClient;
