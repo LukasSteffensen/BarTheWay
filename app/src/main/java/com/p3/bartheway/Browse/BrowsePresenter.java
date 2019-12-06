@@ -270,6 +270,7 @@ public class BrowsePresenter {
                     final String timestampReturn,
                     final byte returned) {
 
+        view.showLoading();
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
         Call<Loan> callReturnLoan =  apiInterface.returnLoan(card_uid, timestampReturn, returned);
@@ -282,10 +283,12 @@ public class BrowsePresenter {
                 if (response.isSuccessful() && response.body()!= null) {
                     Boolean success = response.body().isSuccess();
                     if (success) {
+                        view.hideLoading();
                         Log.i("onResponse", "success return loan");
                      //   Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
                         Log.i("onResponse", "return loan " + response.body().getMessage());
+                        view.hideLoading();
                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
@@ -295,7 +298,7 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<Loan> call, @NonNull Throwable t) {
                 Log.i("onFailure", "return loan" + t.getLocalizedMessage());
                 Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
+                view.hideLoading();
             }
         });
         Call<Item> callReturnItem=  apiInterface.updateItem(title, -1);
@@ -308,9 +311,11 @@ public class BrowsePresenter {
                 if (response.isSuccessful() && response.body()!= null) {
                     Boolean success = response.body().getSuccess();
                     if (success) {
+                        view.hideLoading();
                         Log.i("onResponse", "success return item");
                         //   Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     } else {
+                        view.hideLoading();
                         Log.i("onResponse", "return item " + response.body().getMessage());
                         Toast.makeText(context, response.body().getMessage(), Toast.LENGTH_SHORT).show();
                     }
@@ -321,7 +326,7 @@ public class BrowsePresenter {
             public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
                 Log.i("onFailure", "return loan" + t.getLocalizedMessage());
                 Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-
+                view.hideLoading();
             }
         });
         Call<Student> callStudent =  apiInterface.updateStudent("", card_uid);

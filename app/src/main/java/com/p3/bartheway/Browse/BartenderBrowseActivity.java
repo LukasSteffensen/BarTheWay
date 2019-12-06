@@ -177,7 +177,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
             mTxtReceive.setText("");
             mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
             mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
-            swipeRefresh.setRefreshing(true);
+            presenter.getItemData();
         });
 
         mBtnClearInput = findViewById(R.id.btnClearInput);
@@ -334,10 +334,10 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     // get data from database and updates the recyclerView
     @Override
     public void onGetResult(List<Item> items) {
+        this.items = items;
         mAdapter = new ItemRecyclerAdapter(items, this, getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-        this.items = items;
     }
 
     @Override
@@ -356,8 +356,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
     }
 
     void getStudentData(long card_uid){
-
-        showLoading();
 
         Call<List<Student>> call = apiInterface.getStudent(card_uid);
         call.enqueue(new Callback<List<Student>>() {
