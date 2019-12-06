@@ -26,7 +26,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("saveLoan.php")
     Call<Loan> saveLoan(
-            @Field("card_uid") int card_uid,
+            @Field("card_uid") long card_uid,
             @Field("title") String title,
             @Field("timestampBorrow") String timestampBorrow,
             @Field("returned") byte returned
@@ -35,7 +35,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("returnLoan.php")
     Call<Loan> returnLoan(
-            @Field("card_uid") int card_uid,
+            @Field("card_uid") long card_uid,
             @Field("timestampReturn") String timestampReturn,
             @Field("returned") byte returned
     );
@@ -44,21 +44,21 @@ public interface ApiInterface {
     @POST("updateItem.php")
     Call<Item> updateItem(
             @Field("title") String title,
-            @Field("card_uid") int card_uid
+            @Field("card_uid") long card_uid
     );
 
     @FormUrlEncoded
     @POST("updateStudent.php")
     Call<Student> updateStudent(
             @Field("title") String title,
-            @Field("card_uid") int card_uid
+            @Field("card_uid") long card_uid
     );
 
     @GET("getItems.php")
     Call<List<Item>> getItems();
 
     @GET("getStudent.php")
-    Call<List<Student>> getStudent(@Query("card_uid") int card_uid);
+    Call<List<Student>> getStudent(@Query("card_uid") long card_uid);
 
     @GET("currentBorrowers.php")
     Call<List<Student>> getBorrowers();

@@ -10,12 +10,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.p3.bartheway.Database.Loan;
 import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -37,6 +39,8 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
 
     private List<Loan> loanList;
     private List<Student> studentList;
+
+    TextView textViewTitle;
 
     ArrayList<Loan> loanArrayList = new ArrayList<>();
     ArrayList<Student> studentArrayList = new ArrayList<>();
@@ -95,9 +99,9 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
                 studentArrayList.add(student);
             }
             loanList = loanArrayList;
-            Log.i("previous fragment", loanList.size() + "");
+            Collections.reverse(loanList);
             studentList = studentArrayList;
-            Log.i("previous fragment", studentList.size() + "");
+            Collections.reverse(studentList);
 
         }
     }
@@ -108,6 +112,11 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
 
         View view = inflater.inflate(R.layout.fragment_previous_loans, container, false);
 
+        textViewTitle = view.findViewById(R.id.textViewTitle);
+        textViewTitle.setText(loanList.get(0).getTitle());
+        for (int i = 0; i < loanList.size(); i++) {
+            loanList.get(i).setTitle("");
+        }
         mRecyclerView = view.findViewById(R.id.previousBorrowersRecycler);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mRecyclerView.setHasFixedSize(true);

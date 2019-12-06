@@ -55,7 +55,7 @@ public class BrowsePresenter {
             }
         });
     }
-    void getStudentData(int card_uid){
+    void getStudentData(long card_uid){
 
         view.showLoading();
 
@@ -152,7 +152,7 @@ public class BrowsePresenter {
      * @param returned
      */
     void saveLoan(Context context,
-                          final int card_uid,
+                          final long card_uid,
                           final String title,
                           final String timestampBorrow,
                           final byte returned) {
@@ -265,7 +265,7 @@ public class BrowsePresenter {
      * @param returned
      */
     void returnItem(Context context,
-                    final int card_uid,
+                    final long card_uid,
                     final String title,
                     final String timestampReturn,
                     final byte returned) {

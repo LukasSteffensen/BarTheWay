@@ -8,7 +8,7 @@ public class Loan {
     @Expose
     @SerializedName("title") private String title;
     @Expose
-    @SerializedName("card_uid") private int card_uid;
+    @SerializedName("card_uid") private long card_uid;
     @Expose
     @SerializedName("timestampBorrow") private String timestampBorrow;
     @Expose
@@ -28,11 +28,11 @@ public class Loan {
         this.title = title;
     }
 
-    public int getCard_uid() {
+    public long getCard_uid() {
         return card_uid;
     }
 
-    public void setCard_uid(int card_uid) {
+    public void setCard_uid(long card_uid) {
         this.card_uid = card_uid;
     }
 

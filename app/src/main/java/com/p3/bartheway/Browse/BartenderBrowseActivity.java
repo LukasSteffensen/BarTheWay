@@ -88,6 +88,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         mRecyclerView = findViewById(R.id.item_recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
+        if (mAdapter != null) {
+            mAdapter.notifyDataSetChanged();
+        }
 
         apiInterface = ApiClient
                 .getApiClient()
@@ -162,14 +165,14 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
         mBtnConfirm.setOnClickListener(v -> {
             Date date = new Date();
-
             String title = mTxtGame.getText().toString().trim();
             title = title.replaceAll("'", "''");
-            int card_uid = student.get(0).getCard_uid();
+            long card_uid = student.get(0).getCard_uid();
             String timestampBorrow = new Timestamp(date.getTime()).toString();
-            timestampBorrow = removeLastFourChars(timestampBorrow);
+            timestampBorrow = removeTimestampDecimals(timestampBorrow);
             byte returned = 0;
             presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
+            mAdapter.notifyDataSetChanged();
             student = null;
             mTxtGame.setText("");
             mTxtReceive.setText("");
@@ -201,11 +204,11 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Date date = new Date();
 
-                    int card_uid = student.get(0).getCard_uid();
+                    long card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
                     title = title.replaceAll("'", "''");
                     String timestampReturn = new Timestamp(date.getTime()).toString();
-                    timestampReturn = removeLastFourChars(timestampReturn);
+                    timestampReturn = removeTimestampDecimals(timestampReturn);
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
                     student = null;
@@ -340,7 +343,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         this.student = student;
     }
 
-    void getStudentData(int card_uid){
+    void getStudentData(long card_uid){
 
         showLoading();
 
@@ -403,8 +406,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                         final String strInput = new String(buffer, 0, i);
                         String hex = strInput.toUpperCase();
                         hex = reverse(hex);
+                        Log.i("HEX", hex);
                         if(hex.length() == 8) {
-                            Integer cardUID = Integer.parseInt(hex, 16);
+                            Long cardUID = Long.parseLong(hex, 16);
                             Log.i("Card UID is ", "" + cardUID);
                             mTxtReceive.post(() -> getStudentData(cardUID));
                         }
@@ -550,9 +554,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         }
     }
 
-    public static String removeLastFourChars(String s) {
+    public static String removeTimestampDecimals(String s) {
         return (s == null || s.length() == 3)
                 ? null
-                : (s.substring(0, s.length() - 4));
+                : (s.substring(0, 19));
     }
 }

@@ -16,7 +16,7 @@ public class Item {
     @Expose
     @SerializedName("maxPlayers") private int maxPlayers;
     @Expose
-    @SerializedName("card_uid") private int card_uid;
+    @SerializedName("card_uid") private long card_uid;
     @Expose
     @SerializedName("duration") private String duration;
     @Expose
@@ -83,11 +83,11 @@ public class Item {
         this.language = language;
     }
 
-    public int getCardUid() {
+    public long getCardUid() {
         return card_uid;
     }
 
-    public void setCardUid(int cardUid) {
+    public void setCardUid(long cardUid) {
         this.card_uid = cardUid;
     }
 

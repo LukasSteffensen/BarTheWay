@@ -14,7 +14,7 @@ public class Student {
     @Expose
     @SerializedName("studentNumber") private int studentNumber;
     @Expose
-    @SerializedName("card_uid") private int card_uid;
+    @SerializedName("card_uid") private long card_uid;
     @Expose
     @SerializedName("success") private Boolean success;
     @Expose
@@ -53,11 +53,11 @@ public class Student {
         this.studentNumber = studentNumber;
     }
 
-    public int getCard_uid() {
+    public long getCard_uid() {
         return card_uid;
     }
 
-    public void setCard_uid(int card_uid) {
+    public void setCard_uid(long card_uid) {
         this.card_uid = card_uid;
     }
 

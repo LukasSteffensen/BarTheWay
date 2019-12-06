@@ -13,6 +13,7 @@ import com.p3.bartheway.Database.Student;
 import com.p3.bartheway.R;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -60,15 +61,18 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Date date = new Date();
 
-                    int card_uid = studentList.get(position).getCard_uid();
+                    long card_uid = studentList.get(position).getCard_uid();
                     String title = loanList.get(position).getTitle();
                     title = title.replaceAll("'", "''");
                     String timestampReturn = new Timestamp(date.getTime()).toString();
-                    timestampReturn = BartenderBrowseActivity.removeLastFourChars(timestampReturn);
+                    timestampReturn = BartenderBrowseActivity.removeTimestampDecimals(timestampReturn);
                     byte returned = 1;
                     presenter.returnItem(this, card_uid, title, timestampReturn, returned);
                     loanList.remove(position);
                     studentList.remove(position);
+                    if (loanList.size() == 0) {
+                        textViewCurrentBorrowers.setText("There are no current borrowers");
+                    }
                     mAdapter.notifyDataSetChanged();
                 }).setNegativeButton("No", ((dialog, which) -> {
             dialog.cancel();
@@ -91,8 +95,12 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
 
     @Override
     public void onGetLoans(List<Loan> loans) {
-        loanList = loans;
-        presenter.getCurrentBorrowers();
+        if (loans.size()== 0) {
+            textViewCurrentBorrowers.setText("There are no current borrowers");
+        } else {
+            loanList = loans;
+            presenter.getCurrentBorrowers();
+        }
     }
 
 
@@ -109,6 +117,8 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
     @Override
     public void onGetStudent(List<Student> students) {
         studentList = students;
+        Collections.reverse(loanList);
+        Collections.reverse(studentList);
         Student temp;
         for (int i = 0; i < loanList.size(); i++) {
             for (int j = 0; j < students.size(); j++) {

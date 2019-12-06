@@ -29,7 +29,12 @@ public class LoanRecyclerAdapter extends RecyclerView.Adapter<LoanRecyclerAdapte
     @NonNull
     @Override
     public RecyclerViewAdapter onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.loan_card, viewGroup, false);
+        View view;
+        if (loanList.get(0).getTitle().equals("")) {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.previous_loan_card, viewGroup, false);
+        } else {
+            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.loan_card, viewGroup, false);
+        }
         return new RecyclerViewAdapter(view, mOnClickListener);
     }
 
@@ -39,7 +44,9 @@ public class LoanRecyclerAdapter extends RecyclerView.Adapter<LoanRecyclerAdapte
         Student student = studentList.get(i);
 
         recyclerViewAdapter.mTextViewStudentName.setText(student.getStudentName());
-        recyclerViewAdapter.mTextViewTitle.setText(loan.getTitle());
+        if (!loan.getTitle().equals("")) {
+            recyclerViewAdapter.mTextViewTitle.setText(loan.getTitle());
+        }
         recyclerViewAdapter.mTextViewTimestamp.setText(loan.getTimestampBorrow());
 
     }
