@@ -204,6 +204,7 @@ public class PreviousBorrowersFragment extends Fragment implements BrowseView, I
     @Override
     public void onItemClick(int position) {
         String title = itemList.get(position).getTitle();
+        title = title.replaceAll("'","''");
         presenter.getPreviousLoans(title);
     }
 
