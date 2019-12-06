@@ -184,7 +184,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                         mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
                         mAdapter.setSelected_position(-1);
                         mAdapter.notifyDataSetChanged();
-
                     }).setNegativeButton("No", ((dialog, which) -> dialog.cancel()));
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
@@ -225,10 +224,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     for (int i = 0; i < items.size(); i++) {
                         if (items.get(i).getTitle().equals(title)) {
                             items.get(i).setCardUid(-1);
-                            Log.i("Item title", items.get(i).getTitle());
-                            Log.i("student's item title", title);
-
                         }
+                        Log.i("Item title", items.get(i).getTitle());
+                        Log.i("student's item title", title);
                     }
                     title = title.replaceAll("'", "''");
                     String timestampReturn = new Timestamp(date.getTime()).toString();
