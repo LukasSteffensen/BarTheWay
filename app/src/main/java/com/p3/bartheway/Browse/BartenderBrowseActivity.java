@@ -59,7 +59,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     List<Student> student;
 
-
     private boolean mIsUserInitiatedDisconnect = false;
 
     private TextView mTxtReceive;
@@ -186,6 +185,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 mTxtReceive.setText("");
             }
             mTxtGame.setText("");
+            mAdapter.selected_position = -1;
+            mAdapter.notifyDataSetChanged();
         });
     }
 
@@ -306,11 +307,14 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         } else {
             mTxtGame.setText(items.get(position).getTitle());
         }
+
     }
 
     @Override
     public void showLoading() {
         swipeRefresh.setRefreshing(true);
+        mTxtGame.setText("");
+        mTxtReceive.setText("");
     }
 
     @Override
