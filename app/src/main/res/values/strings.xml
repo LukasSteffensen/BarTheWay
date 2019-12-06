@@ -17,4 +17,6 @@
     <string name="menu_logout">Logout</string>
     <string name="toolbar_title_browse">BarTheWay</string>
     <string name="password">Password</string>
+    <string name="text_Login">Login as student or bartender</string>
+    <string name="login_as_student_or_bartender">Login as student or bartender</string>
 </resources>
