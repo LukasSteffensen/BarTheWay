@@ -227,6 +227,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                             items.get(i).setCardUid(-1);
                             Log.i("Item title", items.get(i).getTitle());
                             Log.i("student's item title", title);
+
                         }
                     }
                     title = title.replaceAll("'", "''");
