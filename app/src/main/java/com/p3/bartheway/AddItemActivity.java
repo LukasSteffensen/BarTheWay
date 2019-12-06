@@ -96,7 +96,7 @@ public class AddItemActivity extends AppCompatActivity {
                     editTextMinPlayers.setError("Please enter a minimum amount of players");
                 } else if (maxPlayersString.isEmpty()) {
                     editTextMaxPlayers.setError("Please enter a maximum amount of players");
-                } else if (minPlayers>maxPlayers) {
+                } else if (minPlayers > maxPlayers) {
                     Toast.makeText(this,
                             "Minimum players cannot be greater than maximum players",
                             Toast.LENGTH_SHORT).show();
@@ -123,14 +123,14 @@ public class AddItemActivity extends AppCompatActivity {
 
 
         apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
-        Call<Item> call =  apiInterface.saveItem(title, language, description, minPlayers, maxPlayers, duration, year);
+        Call<Item> call = apiInterface.saveItem(title, language, description, minPlayers, maxPlayers, duration, year);
 
         call.enqueue(new Callback<Item>() {
             @Override
             public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
 
                 Log.i("onResponse", "try");
-                if (response.isSuccessful() && response.body()!= null) {
+                if (response.isSuccessful() && response.body() != null) {
                     Boolean success = response.body().getSuccess();
                     if (success) {
                         Log.i("onResponse", "success");
