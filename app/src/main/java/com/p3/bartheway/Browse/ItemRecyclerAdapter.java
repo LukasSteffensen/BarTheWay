@@ -26,6 +26,14 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     private Context context;
     int selected_position = -1;
 
+    public int getSelected_position() {
+        return selected_position;
+    }
+
+    public void setSelected_position(int selected_position) {
+        this.selected_position = selected_position;
+    }
+
     List<Item> mItemList;
     List<Item> mItemListFilter;
 

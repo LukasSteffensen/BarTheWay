@@ -87,9 +87,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         mRecyclerView = findViewById(R.id.item_recyclerView);
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         mRecyclerView.setHasFixedSize(true);
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
 
         apiInterface = ApiClient
                 .getApiClient()
@@ -169,19 +166,24 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     .setPositiveButton("Yes", (dialog, which) -> {
                         Date date = new Date();
                         String title = mTxtGame.getText().toString().trim();
-                        title = title.replaceAll("'", "''");
                         long card_uid = student.get(0).getCard_uid();
+                        for (int i = 0; i < items.size(); i++) {
+                            if (items.get(i).getTitle().equals(title)) {
+                                items.get(i).setCardUid(card_uid);
+                            }
+                        }
+                        title = title.replaceAll("'", "''");
                         String timestampBorrow = new Timestamp(date.getTime()).toString();
                         timestampBorrow = removeTimestampDecimals(timestampBorrow);
                         byte returned = 0;
                         presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
-                        mAdapter.notifyDataSetChanged();
                         student = null;
                         mTxtGame.setText("");
                         mTxtReceive.setText("");
                         mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
                         mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
-                        presenter.getItemData();
+                        mAdapter.setSelected_position(-1);
+                        mAdapter.notifyDataSetChanged();
 
                     }).setNegativeButton("No", ((dialog, which) -> dialog.cancel()));
             AlertDialog alertDialog = builder.create();
@@ -196,7 +198,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 mTxtReceive.setText("");
             }
             mTxtGame.setText("");
-            mAdapter.selected_position = -1;
+            mAdapter.setSelected_position(-1);
             mAdapter.notifyDataSetChanged();
         });
     }
@@ -220,6 +222,11 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
                     long card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
+                    for (int i = 0; i < items.size(); i++) {
+                        if (items.get(i).getTitle().equals(title)) {
+                            items.get(i).setCardUid(-1);
+                        }
+                    }
                     title = title.replaceAll("'", "''");
                     String timestampReturn = new Timestamp(date.getTime()).toString();
                     timestampReturn = removeTimestampDecimals(timestampReturn);
@@ -228,6 +235,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     student = null;
                     isAlertShowing = false;
                     mTxtReceive.setText("");
+                    mAdapter.notifyDataSetChanged();
                 }).setNegativeButton("No", ((dialog, which) -> {
             student = null;
 
@@ -519,7 +527,12 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
             }
         }
         Log.d(TAG, "Resumed");
+        if (mAdapter != null) {
+            presenter.getItemData();
+            mAdapter.notifyDataSetChanged();
+        }
         super.onResume();
+
     }
 
     @Override
