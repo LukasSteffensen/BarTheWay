@@ -26,5 +26,5 @@
     <string name="login_password">password</string>
     <string name="current_borrowers_title">Current borrowers</string>
     <string name="text_Login">Login as student or bartender</string>
-    <string name="login_as_student_or_bartender">Login as student or bartender</string>
+    <string name="login_as_student_or_bartender">Log in as student or bartender</string>
 </resources>
