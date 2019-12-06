@@ -6,4 +6,6 @@
     <color name="colorCardView">#5A5A5A</color>
     <color name="colorLightGrey">#F3F3F3</color>
     <color name="colorNotAsLightGrey">#D3D3D3</color>
+    <color name="colorSelectGame">#53FF58</color>
+    <color name="lightRed">#DDFC4A4A</color>
 </resources>
