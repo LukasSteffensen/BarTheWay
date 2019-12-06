@@ -49,7 +49,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter recyclerViewAdapter, int i) {
         Item item = mItemList.get(i);
         if(item.getCardUid() < 0){
-            recyclerViewAdapter.itemView.setBackgroundColor(selected_position == i ? Color.GREEN : Color.TRANSPARENT);
+            recyclerViewAdapter.itemView.setBackgroundResource(selected_position == i ? R.color.colorSelectGame : Color.TRANSPARENT);
         } else {
             recyclerViewAdapter.itemView.setBackgroundResource(selected_position != i ? R.color.lightRed : Color.TRANSPARENT);
         }
@@ -70,10 +70,6 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     public Item getItem(int position){
         return mItemList.get(position);
-    }
-
-    public void setSelected_position(int selected_position) {
-        this.selected_position = selected_position;
     }
 
     @Override
