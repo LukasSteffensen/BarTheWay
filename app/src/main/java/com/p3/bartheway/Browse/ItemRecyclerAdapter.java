@@ -2,6 +2,7 @@ package com.p3.bartheway.Browse;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +24,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     private OnClickListener mOnClickListener;
     private Context context;
-    private boolean isAvailable;
+    int selected_position = -1;
 
     List<Item> mItemList;
     List<Item> mItemListFilter;
@@ -35,6 +36,8 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         this.mItemListFilter = new ArrayList<>(itemList);
     }
 
+
+
     @NonNull
     @Override
     public RecyclerViewAdapter onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -45,9 +48,10 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter recyclerViewAdapter, int i) {
         Item item = mItemList.get(i);
-
-        if (item.getCardUid() < 0) {
-            isAvailable = false;
+        if(item.getCardUid() < 0){
+            recyclerViewAdapter.itemView.setBackgroundColor(selected_position == i ? Color.GREEN : Color.TRANSPARENT);
+        } else {
+            recyclerViewAdapter.itemView.setBackgroundColor(selected_position != i ? Color.RED : Color.TRANSPARENT);
         }
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
@@ -66,6 +70,10 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
     public Item getItem(int position){
         return mItemList.get(position);
+    }
+
+    public void setSelected_position(int selected_position) {
+        this.selected_position = selected_position;
     }
 
     @Override
@@ -128,6 +136,10 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         @Override
         public void onClick(View v) {
             mOnClickListener.onItemClick(getAdapterPosition());
+            if (getAdapterPosition() == RecyclerView.NO_POSITION || getItem(getAdapterPosition()).getCardUid() > 0) return;
+            notifyItemChanged(selected_position);
+            selected_position = getAdapterPosition();
+            notifyItemChanged(selected_position);
         }
     }
 

@@ -59,7 +59,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     List<Student> student;
 
-
     private boolean mIsUserInitiatedDisconnect = false;
 
     private TextView mTxtReceive;
@@ -162,7 +161,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
         mBtnConfirm.setOnClickListener(v -> {
             Date date = new Date();
-
             String title = mTxtGame.getText().toString().trim();
             title = title.replaceAll("'", "''");
             int card_uid = student.get(0).getCard_uid();
@@ -183,6 +181,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 mTxtReceive.setText("");
             }
             mTxtGame.setText("");
+            mAdapter.selected_position = -1;
+            mAdapter.notifyDataSetChanged();
         });
     }
 
@@ -303,11 +303,14 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         } else {
             mTxtGame.setText(items.get(position).getTitle());
         }
+
     }
 
     @Override
     public void showLoading() {
         swipeRefresh.setRefreshing(true);
+        mTxtGame.setText("");
+        mTxtReceive.setText("");
     }
 
     @Override
