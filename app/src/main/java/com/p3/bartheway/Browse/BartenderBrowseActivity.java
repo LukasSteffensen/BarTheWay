@@ -171,6 +171,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
             student = null;
             mTxtGame.setText("");
             mTxtReceive.setText("");
+            mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
+            mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
+            swipeRefresh.setRefreshing(true);
         });
 
         mBtnClearInput = findViewById(R.id.btnClearInput);
@@ -181,8 +184,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 mTxtReceive.setText("");
             }
             mTxtGame.setText("");
-            mAdapter.selected_position = -1;
-            mAdapter.notifyDataSetChanged();
+            mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
+            mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
         });
     }
 
@@ -200,7 +203,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Date date = new Date();
-
+                    mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
+                    mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
                     int card_uid = student.get(0).getCard_uid();
                     String title = student.get(0).getTitle();
                     title = title.replaceAll("'", "''");
@@ -302,8 +306,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
             Toast.makeText(this, "This game is already borrowed", Toast.LENGTH_SHORT).show();
         } else {
             mTxtGame.setText(items.get(position).getTitle());
+            mTxtGame.setBackgroundResource(R.drawable.text_view_border2);
         }
-
     }
 
     @Override
@@ -311,6 +315,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         swipeRefresh.setRefreshing(true);
         mTxtGame.setText("");
         mTxtReceive.setText("");
+        mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
+        mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
     }
 
     @Override
@@ -357,6 +363,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     Log.i("getStudentDataSuccess", response.body().toString());
                     if (student != null) {
                         mTxtReceive.setText(student.get(0).getStudentName());
+                        mTxtReceive.setBackgroundResource(R.drawable.text_view_border2);
                     } else {
                         Log.i("student", "is null");
                     }
@@ -409,7 +416,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                         if(hex.length() == 8) {
                             Integer cardUID = Integer.parseInt(hex, 16);
                             Log.i("Card UID is ", "" + cardUID);
-                            mTxtReceive.post(() -> getStudentData(cardUID));
+                            mTxtReceive.post(() -> {
+                                getStudentData(cardUID);
+                            });
                         }
                     }
                     Thread.sleep(500);

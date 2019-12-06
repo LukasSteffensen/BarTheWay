@@ -51,7 +51,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         if(item.getCardUid() < 0){
             recyclerViewAdapter.itemView.setBackgroundColor(selected_position == i ? Color.GREEN : Color.TRANSPARENT);
         } else {
-            recyclerViewAdapter.itemView.setBackgroundColor(selected_position != i ? Color.RED : Color.TRANSPARENT);
+            recyclerViewAdapter.itemView.setBackgroundResource(selected_position != i ? R.color.lightRed : Color.TRANSPARENT);
         }
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
