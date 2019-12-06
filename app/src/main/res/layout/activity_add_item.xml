@@ -23,7 +23,7 @@
 
         <EditText
             android:id="@+id/language"
-            android:hint="Language"
+            android:hint="@string/language"
             android:textSize="25sp"
             android:layout_below="@+id/title"
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
 
         <EditText
             android:id="@+id/description"
-            android:hint="Description"
+            android:hint="@string/add_description"
             android:textSize="25sp"
             android:layout_below="@+id/language"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
 
         <EditText
             android:id="@+id/minPlayers"
-            android:hint="Minimum players"
+            android:hint="@string/add_minimum_players"
             android:textSize="25sp"
             android:inputType="number"
             android:layout_below="@+id/description"
@@ -52,7 +52,7 @@
 
         <EditText
             android:id="@+id/maxPlayers"
-            android:hint="Maximum players"
+            android:hint="@string/add_maximum_players"
             android:inputType="number"
             android:textSize="25sp"
             android:layout_below="@+id/minPlayers"
@@ -62,7 +62,7 @@
 
         <EditText
             android:id="@+id/duration"
-            android:hint="Duration"
+            android:hint="@string/add_duration"
             android:textSize="25sp"
             android:layout_below="@+id/maxPlayers"
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
 
         <EditText
             android:id="@+id/year"
-            android:hint="Year"
+            android:hint="@string/add_year"
             android:inputType="number"
             android:textSize="25sp"
             android:layout_below="@+id/duration"

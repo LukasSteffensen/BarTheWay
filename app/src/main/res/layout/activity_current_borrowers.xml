@@ -12,7 +12,7 @@
         android:id="@+id/textViewCurrentBorrowers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Current borrowers"
+        android:text="@string/current_borrowers_title"
         android:layout_gravity="center"
         android:paddingTop="24dp"
         android:paddingBottom="24dp"
