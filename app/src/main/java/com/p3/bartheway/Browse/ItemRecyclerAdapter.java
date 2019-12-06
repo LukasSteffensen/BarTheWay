@@ -56,7 +56,11 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());
-        recyclerViewAdapter.mTextViewPlayers.setText(item.getMinPlayers()+"-"+item.getMaxPlayers());
+        if (item.getMinPlayers()==item.getMaxPlayers()) {
+            recyclerViewAdapter.mTextViewPlayers.setText("Players: " + item.getMinPlayers());
+        } else {
+            recyclerViewAdapter.mTextViewPlayers.setText("Players: " + item.getMinPlayers()+"-"+item.getMaxPlayers());
+        }
         String title = item.getTitle();
         title = title.replaceAll(" ", "_");
         title = title.replaceAll("'", "");

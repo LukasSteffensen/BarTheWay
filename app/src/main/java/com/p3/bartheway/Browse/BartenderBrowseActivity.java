@@ -163,21 +163,29 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
 
         mBtnConfirm.setOnClickListener(v -> {
-            Date date = new Date();
-            String title = mTxtGame.getText().toString().trim();
-            title = title.replaceAll("'", "''");
-            long card_uid = student.get(0).getCard_uid();
-            String timestampBorrow = new Timestamp(date.getTime()).toString();
-            timestampBorrow = removeTimestampDecimals(timestampBorrow);
-            byte returned = 0;
-            presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
-            mAdapter.notifyDataSetChanged();
-            student = null;
-            mTxtGame.setText("");
-            mTxtReceive.setText("");
-            mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
-            mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
-            presenter.getItemData();
+            android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
+            builder.setMessage("Is " + student.get(0).getStudentName() + " borrowing " + mTxtGame.getText() + "?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Date date = new Date();
+                        String title = mTxtGame.getText().toString().trim();
+                        title = title.replaceAll("'", "''");
+                        long card_uid = student.get(0).getCard_uid();
+                        String timestampBorrow = new Timestamp(date.getTime()).toString();
+                        timestampBorrow = removeTimestampDecimals(timestampBorrow);
+                        byte returned = 0;
+                        presenter.saveLoan(this, card_uid, title, timestampBorrow, returned);
+                        mAdapter.notifyDataSetChanged();
+                        student = null;
+                        mTxtGame.setText("");
+                        mTxtReceive.setText("");
+                        mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
+                        mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
+                        presenter.getItemData();
+
+                    }).setNegativeButton("No", ((dialog, which) -> dialog.cancel()));
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         });
 
         mBtnClearInput = findViewById(R.id.btnClearInput);
