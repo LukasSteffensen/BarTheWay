@@ -17,6 +17,14 @@
     <string name="menu_logout">Logout</string>
     <string name="toolbar_title_browse">BarTheWay</string>
     <string name="password">Password</string>
+    <string name="language">Language</string>
+    <string name="add_description">Description</string>
+    <string name="add_minimum_players">Minimum players</string>
+    <string name="add_maximum_players">Maximum players</string>
+    <string name="add_duration">Duration</string>
+    <string name="add_year">Year</string>
+    <string name="login_password">password</string>
+    <string name="current_borrowers_title">Current borrowers</string>
     <string name="text_Login">Login as student or bartender</string>
     <string name="login_as_student_or_bartender">Login as student or bartender</string>
 </resources>
