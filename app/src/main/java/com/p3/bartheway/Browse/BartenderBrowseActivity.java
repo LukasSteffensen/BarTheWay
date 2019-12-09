@@ -25,6 +25,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.TextView;
@@ -131,6 +132,13 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                 mTxtReceive.setText("Not connected to Arduino");
             }
         }
+
+        mTxtReceive.setOnClickListener(v -> {
+            if (mTxtReceive.getText().equals("Not connected to Arduino")) {
+                startActivity(new Intent(getApplicationContext(), BluetoothActivity.class));
+            }
+        });
+
         Log.d(TAG, "Ready");
 
         mBtnConfirm = findViewById(R.id.buttonConfirm);
