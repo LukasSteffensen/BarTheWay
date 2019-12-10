@@ -517,9 +517,6 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
      */
     @Override
     protected void onPause() {
-     //   if (mBTSocket != null && mIsBluetoothConnected) {
-     //       new DisConnectBT().execute();
-     //   }
         Log.d(TAG, "Paused");
         super.onPause();
     }
@@ -545,6 +542,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
 
     @Override
     protected void onStop() {
+        if (mBTSocket != null && mIsBluetoothConnected) {
+            new DisConnectBT().execute();
+        }
         Log.d(TAG, "Stopped");
         super.onStop();
     }

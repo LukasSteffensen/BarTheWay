@@ -149,12 +149,9 @@ public class BluetoothActivity extends AppCompatActivity {
     private void initList(List<BluetoothDevice> objects) {
         final BluetoothDeviceAdapter adapter = new BluetoothDeviceAdapter(getApplicationContext(), R.layout.list_item, R.id.lstContent, objects);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                adapter.setSelectedIndex(position);
-                connect.setEnabled(true);
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            adapter.setSelectedIndex(position);
+            connect.setEnabled(true);
         });
     }
 
@@ -180,8 +177,7 @@ public class BluetoothActivity extends AppCompatActivity {
                 adapter.replaceItems(listDevices);
             } else {
                 msg("No paired devices found, please pair your serial BT device and try again");
-            }
-        }
+            } }
 
     }
 }
