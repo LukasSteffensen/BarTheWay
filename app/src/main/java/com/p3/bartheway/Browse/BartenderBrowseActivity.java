@@ -517,9 +517,9 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
      */
     @Override
     protected void onPause() {
-        if (mBTSocket != null && mIsBluetoothConnected) {
-            new DisConnectBT().execute();
-        }
+     //   if (mBTSocket != null && mIsBluetoothConnected) {
+     //       new DisConnectBT().execute();
+     //   }
         Log.d(TAG, "Paused");
         super.onPause();
     }
@@ -570,8 +570,7 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     BluetoothAdapter.getDefaultAdapter().cancelDiscovery();
                     mBTSocket.connect();
                 }
-            } catch (IOException e) {
-// Unable to connect to device
+            } catch (IOException e) { // Unable to connect to device
                 e.printStackTrace();
                 mConnectSuccessful = false;
             }
