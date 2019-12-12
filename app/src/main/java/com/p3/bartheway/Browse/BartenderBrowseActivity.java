@@ -442,8 +442,8 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                         String hex = strInput.toUpperCase();
                         hex = reverse(hex);
                         if(hex.length() == 8) {
-                            Long cardUID = Long.parseLong(hex, 16);
-                            Log.i("Card UID is ", "" + cardUID);
+                            long cardUID = Long.parseLong(hex, 16);
+                            Log.i("Card UID is", "" + cardUID);
                             mTxtReceive.post(() -> {
                                 getStudentData(cardUID);
                             });
