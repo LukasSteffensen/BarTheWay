@@ -59,8 +59,7 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
         if(item.getCardUid() < 0){
             recyclerViewAdapter.itemView.setBackgroundResource(selected_position == i ? R.color.colorSelectGame : Color.TRANSPARENT);
         } else {
-            recyclerViewAdapter.itemView.setBackgroundResource(selected_position != i ? R.color.lightRed : Color.TRANSPARENT);
-        }
+            recyclerViewAdapter.itemView.setBackgroundResource(selected_position != i ? R.color.lightRed : Color.TRANSPARENT); }
 
         recyclerViewAdapter.mTextViewTitle.setText(item.getTitle());
         recyclerViewAdapter.mTextViewLanguage.setText(item.getLanguage());
@@ -113,7 +112,6 @@ public class ItemRecyclerAdapter extends RecyclerView.Adapter<ItemRecyclerAdapte
             results.values = filteredList;
             return results;
         }
-
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             mItemList.clear();
