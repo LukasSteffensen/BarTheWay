@@ -30,8 +30,6 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapter.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_STUDENT_NAMES = "studentNames";
     private static final String ARG_TITLE = "title";
     private static final String ARG_TIMESTAMP_BORROW = "timestampBorrow";
@@ -59,13 +57,6 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PreviousLoansFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static PreviousLoansFragment newInstance(ArrayList<String> studentNames,
                                                     ArrayList<String> title,
                                                     ArrayList<String> timestampBorrow,
@@ -126,7 +117,6 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -155,17 +145,6 @@ public class PreviousLoansFragment extends Fragment implements LoanRecyclerAdapt
 
     }
 
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

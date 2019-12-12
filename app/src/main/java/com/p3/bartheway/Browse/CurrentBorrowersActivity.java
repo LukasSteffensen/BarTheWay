@@ -60,7 +60,6 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, which) -> {
                     Date date = new Date();
-
                     long card_uid = studentList.get(position).getCard_uid();
                     String title = loanList.get(position).getTitle();
                     title = title.replaceAll("'", "''");
@@ -79,8 +78,6 @@ public class CurrentBorrowersActivity extends AppCompatActivity implements LoanR
         }));
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
-
     }
 
     @Override
