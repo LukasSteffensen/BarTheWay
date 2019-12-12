@@ -64,6 +64,7 @@ public class BrowsePresenter {
             @Override
             public void onResponse(@NonNull Call<List<Student>> call, @NonNull Response<List<Student>> response) {
                 view.hideLoading();
+
                 if (response.isSuccessful() && response.body() != null) {
                     view.onGetStudent(response.body());
                     Log.i("getStudentDataSuccess", response.body().toString());
