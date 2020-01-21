@@ -245,8 +245,10 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
                     mAdapter.notifyDataSetChanged();
                 }).setNegativeButton("No", ((dialog, which) -> {
             student = null;
-
-
+            mTxtGame.setText("");
+            mTxtReceive.setText("");
+            mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
+            mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
             isAlertShowing = false;
             dialog.cancel();
         }));
