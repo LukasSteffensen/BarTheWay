@@ -203,8 +203,10 @@ public class BartenderBrowseActivity extends AppCompatActivity implements ItemRe
         mBtnClearInput.setOnClickListener(arg0 -> {
             if (b.get("Connect").equals("true")) {
                 mTxtReceive.setText("");
+                mTxtReceive.setBackgroundResource(R.drawable.text_view_border1);
             }
             mTxtGame.setText("");
+            mTxtGame.setBackgroundResource(R.drawable.text_view_border1);
             mAdapter.setSelected_position(-1);
             mAdapter.notifyDataSetChanged();
         });
